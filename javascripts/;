@@ -1,0 +1,32 @@
+function RegexParser(str) {
+    this.str    = str;
+}
+
+RegexParser.prototype.parse = function() {
+    for (var i = 0; i < this.str.length; i++) {
+        switch(this.str[i]) {
+            case '(':
+                break;
+            case '|':
+                break;
+            case ')':
+                break
+            case '*':
+                break
+            
+            default:
+                //alert(this.str[i]);
+        }
+    };
+}
+
+
+function State() {
+
+}
+
+function Nfa {
+
+}
+
+
