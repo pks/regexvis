@@ -1,4 +1,10 @@
+http://www.inf.fh-flensburg.de/lang/theor/
+http://www.inf.fh-flensburg.de/lang/compbau/recursivedescent.htm
+http://www.inf.fh-flensburg.de/lang/theor/regular-expression-parser.htm
+http://www.codeproject.com/KB/recipes/OwnRegExpressionsParser.aspx
+
 http://osteele.com/
 http://raphaeljs.com/
 http://thejit.org/
 http://processingjs.org/
+
