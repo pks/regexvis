@@ -1,0 +1,3 @@
+var EPSILON = '~';
+var DELIMITER = '$';
+
