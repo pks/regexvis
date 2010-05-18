@@ -64,16 +64,14 @@ Nfa2Dfa.prototype.do = function() {
 			
 			if (!ttable[q]) {
 				ttable[q] = new Object();
-				ttable[q].isFinal = true;
+				if(q.split('_').indexOf(''+this.getAcceptingState().id) >= 0) {
+					ttable[q].isFinal = true;
+				} else {
+					ttable[q].isFinal = false;
+				}	
 			}
 			
-			var isFinal = false;
-			for (var zz=0; zz < x.length; zz++) {
-				if (StateCmp(x.get(zz), this.acceptingState)) {
-					ttable[q].isFinal = false;
-					break;
-				}
-			}
+			
 			
 			ttable[q][a] = qq;
 			
