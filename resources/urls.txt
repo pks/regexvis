@@ -2,9 +2,11 @@ http://www.inf.fh-flensburg.de/lang/theor/
 http://www.inf.fh-flensburg.de/lang/compbau/recursivedescent.htm
 http://www.inf.fh-flensburg.de/lang/theor/regular-expression-parser.htm
 http://www.codeproject.com/KB/recipes/OwnRegExpressionsParser.aspx
+http://www.inf.fh-flensburg.de/lang/theor/regulaerer-ausdruck-zu-automat-bottomup.htm
 
-http://osteele.com/
-http://raphaeljs.com/
-http://thejit.org/
-http://processingjs.org/
+http://osteele.com/archives/2006/02/reanimator
+http://www.codeguru.com/cpp/cpp/cpp_mfc/parsing/article.php/c4093/
+http://swtch.com/~rsc/regexp/regexp1.html
+http://www.gamedev.net/reference/articles/article2170.asp
 
+http://raphaeljs.com/reference.html

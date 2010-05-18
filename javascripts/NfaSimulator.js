@@ -3,50 +3,40 @@
  *
  */
 function NfaSimulator(nfa) {
-    this.q = new Queue;
-    this.p = new Queue;
-    this.startState = nfa.getStartState();
+	this.startState     = nfa.getStartState();
     this.acceptingState = nfa.getAcceptingState();
 }
 
-NfaSimulator.prototype.getStartState = function() {
-    return this.startState;   
-}
+NfaSimulator.prototype.getStartState = function() { return this.startState }
+NfaSimulator.prototype.getAcceptingState = function() { return this.acceptingState }
 
-NfaSimulator.prototype.getAcceptingState = function() {
-    return this.acceptingState;
-}
-
-NfaSimulator.prototype.run = function(word) {
-    this.word = word;
-    this.str  = '';
-    this.accepted = false;
-    
+NfaSimulator.prototype.simulate = function(word) {
+	var a = '';
+	var accepted = false;
+    this.p = new Stack();
+    this.q = new Stack();
     this.getStartState().mark(true);
     this.q.push(this.getStartState());
-
-    this.str += '$';
-    
-    for (var i = 0; i < word.length; i++) {
-        this.accepted = this.epsclosure();
-        this.str = this.word.substring(i, i+1);
-        this.move(this.str);
+    word += REDELIMITER;
+    for (var i = 0; i < word.length; i++) {	
+        accepted = this.epsclosure();
+		a = word.substring(i, i+1);
+		this.move(a);
     }
-
     return accepted;
 }
 
-
 NfaSimulator.prototype.epsclosure = function() {
-    var s, t;
-    accepted = false;
+    var s = null;
+    var t = null;
+	var accepted = false;
 
-    while(!this.q.empty()) {
+    while(!this.q.isEmpty()) {
         s = this.q.pop();
         this.p.push(s);
         accepted = accepted || s == this.getAcceptingState();
 
-        if(s.symbol == '&') {
+        if(s.symbol == EPSILON) {
             for (var i = 0; i < 2; i++) {
                 t = s.getFollowUp(i);
                 if (t!=null) {
@@ -61,12 +51,11 @@ NfaSimulator.prototype.epsclosure = function() {
     return accepted;
 }
 
-
 NfaSimulator.prototype.move = function(str) {
-    var s;
+    var s = null;
 
-    while(!this.p.empty()) {
-        s = this.q.pop();
+    while(!this.p.isEmpty()) {
+        s = this.p.pop();
         s.mark(false);
         if (s.symbol == str) {
             s.getFollowUp(0).mark(true);
@@ -74,4 +63,3 @@ NfaSimulator.prototype.move = function(str) {
         }
     }
 }
-

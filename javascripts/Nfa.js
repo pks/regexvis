@@ -3,12 +3,12 @@
  *
  */
 function Nfa(symbol) {
-    this.startState;
-    this.acceptingState;
-
+	this.startState     = null;
+	this.acceptingState = null;
+	
     if (symbol) {
-        this.setStartState(new State(symbol));
-        this.setAcceptingState(new State(false));
+        this.setStartState(new NfaState(symbol));
+        this.setAcceptingState(new NfaState(false));
         this.getStartState().setFollowUp(0, this.getAcceptingState());
     }
 }
@@ -18,15 +18,16 @@ Nfa.prototype.setStartState     = function(s) { this.startState = s }
 Nfa.prototype.getAcceptingState = function() { return this.acceptingState }
 Nfa.prototype.setAcceptingState = function(s) { this.acceptingState = s }
 
-Nfa.prototype.concatenation = function(nfa) {
+Nfa.prototype.concat = function(nfa) {
     this.getAcceptingState().setFollowUp(0, nfa.getStartState());
     this.setAcceptingState(nfa.getAcceptingState());
-    return this;
+    
+	return this;
 }
 
 Nfa.prototype.union = function(nfa) {
-    var s = new State();
-    var t = new State();
+    var s = new NfaState();
+    var t = new NfaState();
 
     s.setFollowUp(0, this.getStartState());
     s.setFollowUp(1, nfa.getStartState());
@@ -36,11 +37,13 @@ Nfa.prototype.union = function(nfa) {
     
     this.setStartState(s);
     this.setAcceptingState(t);
+
+	return this;
 }
 
-Nfa.prototype.star = function() {
-    var s = new State();
-    var t = new State();
+Nfa.prototype.kleene = function() {
+    var s = new NfaState();
+    var t = new NfaState();
 
     s.setFollowUp(0, this.getStartState());
     s.setFollowUp(1, t);
@@ -53,4 +56,3 @@ Nfa.prototype.star = function() {
 
     return this;
 }
-
