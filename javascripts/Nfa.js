@@ -3,28 +3,31 @@
  *
  */
 function Nfa(symbol) {
-	this.startState     = null;
-	this.acceptingState = null;
+	this.startState = null;
+	this.finalState = null;
 	
     if (symbol) {
         this.setStartState(new NfaState(symbol));
-        this.setAcceptingState(new NfaState(false));
-        this.getStartState().setFollowUp(0, this.getAcceptingState());
-    }
-}
+        this.setFinalState(new NfaState(false));
+        this.getStartState().setFollowUp(0, this.getFinalState());
+    };
+};
 
-Nfa.prototype.getStartState     = function() { return this.startState }
-Nfa.prototype.setStartState     = function(s) { this.startState = s }
-Nfa.prototype.getAcceptingState = function() { return this.acceptingState }
-Nfa.prototype.setAcceptingState = function(s) { this.acceptingState = s }
+// 
+Nfa.prototype.getStartState = function()  { return this.startState; };
+Nfa.prototype.setStartState = function(s) { this.startState = s; };
+Nfa.prototype.getFinalState = function()  { return this.finalState; };
+Nfa.prototype.setFinalState = function(s) { this.finalState = s; };
 
+// 
 Nfa.prototype.concat = function(nfa) {
-    this.getAcceptingState().setFollowUp(0, nfa.getStartState());
-    this.setAcceptingState(nfa.getAcceptingState());
+    this.getFinalState().setFollowUp(0, nfa.getStartState());
+    this.setFinalState(nfa.getFinalState());
     
 	return this;
-}
+};
 
+// 
 Nfa.prototype.union = function(nfa) {
     var s = new NfaState();
     var t = new NfaState();
@@ -32,15 +35,16 @@ Nfa.prototype.union = function(nfa) {
     s.setFollowUp(0, this.getStartState());
     s.setFollowUp(1, nfa.getStartState());
     
-    this.getAcceptingState().setFollowUp(0, t);
-    nfa.getAcceptingState().setFollowUp(0, t);
+    this.getFinalState().setFollowUp(0, t);
+    nfa.getFinalState().setFollowUp(0, t);
     
     this.setStartState(s);
-    this.setAcceptingState(t);
+    this.setFinalState(t);
 
 	return this;
-}
+};
 
+// 
 Nfa.prototype.kleene = function() {
     var s = new NfaState();
     var t = new NfaState();
@@ -48,11 +52,11 @@ Nfa.prototype.kleene = function() {
     s.setFollowUp(0, this.getStartState());
     s.setFollowUp(1, t);
 
-    this.getAcceptingState().setFollowUp(0, this.getStartState());
-    this.getAcceptingState().setFollowUp(1, t);
+    this.getFinalState().setFollowUp(0, this.getStartState());
+    this.getFinalState().setFollowUp(1, t);
 
     this.setStartState(s);
-    this.setAcceptingState(t);
+    this.setFinalState(t);
 
     return this;
-}
+};

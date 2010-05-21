@@ -1,0 +1,170 @@
+% template-beamer.tex
+% Patrick Simianer <p@simianer.de>
+% YYYY-MM-DD
+\documentclass[ignorenonframetext]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Singapore}
+  \usecolortheme{dolphin}
+  \usefonttheme{professionalfonts}
+  \useinnertheme{circles}
+  \useoutertheme{miniframes}
+  \setbeamertemplate{navigation symbols}{}
+  \beamersetuncovermixins{\opaqueness<1>{5}}{\opaqueness<2->{15}}
+  \setbeamertemplate{footline}[frame number]
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{framed}
+
+
+\title[ktitel]{Autor(en)\\ Titel}
+\author{Patrick~Simianer \tiny 2508483\\\normalsize 1985-01-18}
+\date{Veranstaltung bei Dozent\\ Universitiät Heidelberg im Wintersemester 1985/86}
+
+\AtBeginSection[]{%
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+}% AtBeginSection
+
+
+
+\begin{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[plain]{\titlepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[plain]
+    \frametitle{Gliederung}
+    \tableofcontents
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Pause, Abblenden}
+
+
+\subsection{Pause}
+
+\begin{frame}
+    \frametitle{Test von Pause}
+
+    \begin{itemize}
+        \item Motivation 
+        .....
+        \pause
+        \item Experiment
+        \begin{itemize}
+            \item Aufbau des Experiments
+            .....
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Abblenden}
+
+\begin{frame}
+    \frametitle{Abblenden}
+    
+    \begin{itemize}
+        \item<1-> Normal LaTeX class.
+        \item<2-> Easy overlays.
+        \item<3-> No external programs needed.      
+    \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Nur ein Test}
+
+
+\subsection{Test Blocks}
+
+\begin{frame}
+    \frametitle{Test Blocks}
+    
+    \begin{alert}{Titel des Blocks}
+        Dies steht in einem Block
+    \end{alert}
+    
+    \begin{example}{Titel des 2. Blocks}
+        Dies steht in einem Block\\ Das auch ...
+    \end{example}
+    
+    \begin{block}{Titel des 2. Blocks}
+        Dies steht in einem Block\\ Das auch ...
+    \end{block}
+  
+    \begin{framed}
+        \begin{block}{Titel des 2. Blocks}
+            Dies steht in einem Block\\ Das auch ...
+        \end{block}
+    \end{framed}
+\end{frame}
+
+
+\subsection{Nochmal Blocks}
+
+\begin{frame}
+    \frametitle{Nochmal Blocks}
+    
+    \begin{block}{Titel des Blocks}
+        Dies steht in einem Block\\ Das auch ...
+    \end{block}
+    \begin{block}{Titel des 2. Blocks}
+        Dies steht in einem Block\\ Das auch ...
+    \end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Verbatim}
+
+
+\begin{frame}[fragile]
+\frametitle{Verbatim}
+\begin{verbatim}
+a
+b
+c
+d
+e
+f
+g
+\end{verbatim}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[allowframebreaks]
+    \frametitle{Literatur}
+    \bibliographystyle{alpha}
+    \bibliography{beamer}
+    \nocite{*}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\end{document}
+

@@ -3056,6 +3056,24 @@ Raphael = (function () {
         animationElements[element.id] && (params.start = animationElements[element.id].start);
         return this.animate(params, ms, easing, callback);
     };
+	// hack! http://groups.google.com/group/raphaeljs/browse_thread/thread/f5dc3ea149d3540b
+	Element[proto].moveTo = function(x, y){
+            switch (this.type) {
+                    case "path":
+                            var path = pathToRelative(this.attrs.path),
+                                    dim = pathDimensions(path),
+                                    dx = (path[0][1] - dim.x) + x,
+                                    dy = (path[0][2] - dim.y) + y;
+                            path[0][1] = dx;
+                            path[0][2] = dy;
+                            return this.attr({path: path});
+                            break;
+                    default:
+                            return this.attr({x: x, y: y});
+                    break;
+            }
+            return this;
+    };
     Element[proto].animateAlong = along();
     Element[proto].animateAlongBack = along(1);
     function along(isBack) {

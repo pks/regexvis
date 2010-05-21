@@ -6,28 +6,81 @@
     <meta http-equiv='Content-Language' content='en_EN' />
     <meta name='author' content='Patrick Simianer' />       
     
-    <title>RegexVis</title>
+    <title>Visualizing Regular Expressions (Patrick Simianer/'Endliche Automaten' SS2010)</title>
     
-    <link rel='stylesheet' type='text/css' href='stylesheets/RegexVis.css' />
+    <link rel='stylesheet' type='text/css' href='stylesheets/styles.css' />
     
-    <script type='text/javascript' src='javascripts/main.js'></script>
+    <script type='text/javascript' src='javascripts/lib/raphael.js'></script>
+    <script type='text/javascript' src='javascripts/lib/jquery.js'></script>
+    <script type='text/javascript' src='javascripts/lib/jquery-ui.js'></script>
+
+    <script type='text/javascript' src='javascripts/globals.js'></script>
     <script type='text/javascript' src='javascripts/NfaState.js'></script>
     <script type='text/javascript' src='javascripts/Nfa.js'></script>
     <script type='text/javascript' src='javascripts/RegexParser.js'></script>
     <script type='text/javascript' src='javascripts/Stack.js'></script>       
     <script type='text/javascript' src='javascripts/NfaSimulator.js'></script>
     <script type='text/javascript' src='javascripts/Nfa2Dfa.js'></script>
-    <script type='text/javascript' src='javascripts/lib/raphael.js'></script>
-    <script type='text/javascript' src='javascripts/lib/graffle.js'></script>
-    <!--<script type='text/javascript' src='javascripts/Dfa2Graph.js'></script>-->
+    <script type='text/javascript' src='javascripts/graph.js'></script>
+	<script type="text/javascript" src='javascripts/uifunc.js'></script>
 </head>
 
 <body>
 
-	<script type="text/javascript">
-		main();
-	</script>
-	<div id="holder"></div>
+	<div id="wrapper">
+		
+		<p style="line-height:1.3em">
+			<a class="message gray" href="#" onclick="$('#desc').toggle();">
+				<strong>Description</strong></a>
+			<span id="desc">&nbsp;Lorem ipsum dolor sit amet,
+			consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+			labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+			nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate
+			velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+			occaecat cupidatat non proident, sunt in culpa qui officia
+			deserunt mollit anim id est laborum.</span>
+		</p>
+		
+		<table>
+			<tr>
+				<td style="text-align:right"><strong style="color:#303030">Alphabet:</strong></td>
+				<td><strong style="color:#303030">
+					<script type="text/javascript" charset="utf-8">
+						document.write(ALPHABET.substr(0,ALPHABET.length-1));
+						</script>
+					</strong>
+				</td>	
+			</tr>
+			<tr>
+				<td style='text-align:right'><strong>Regular Expression:</strong></td>
+				<td><input type="text" name="regex" id="regex" value=""
+						onchange='checkLength(this, "#parseButton")'
+						onmouseout='checkLength(this, "#parseButton")' autocomplete="off" />
+						<input type="button" name="parseButton" id="parseButton"
+						value="Parse" disabled='disabled' autocomplete="off" onclick="uiParse()" />
+				</td>
+			</tr>
+			<tr>
+				<td style='text-align:right'><strong>Word:</strong></td>
+				<td><input type="text" name="word" id="word" value="" disabled='disabled'
+						onchange='checkLength(this, "#checkButton")'
+						onmouseout='checkLength(this, "#checkButton")' autocomplete="off" />
+					<input type="button" name="checkButton" id="checkButton"
+						value="Check" disabled='disabled' autocomplete="off" onclick="uiSimulate()" />
+					</td>
+				</tr>
+		</table>
+			
+		<p>
+			<a class='message gray' href='#' onclick="window.location.reload()"/>Reset</a>
+			<span id="parseMessage" class="message" style="display:none"></span>
+			<span id="checkMessage" class="message" style="display:none"></span>
+		</p>
+		
+		<div id="holder"></div>
+		
+	</div>
 
 </body>
 </html>
