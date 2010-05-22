@@ -154,10 +154,10 @@ function graph() {
 	var nodes 		= [];
 	var nodeById	= [];
 	var i = 0, n, color, isFinal, selfConn = false, selfConnSymbol;
-	var nx 	     = 10;
+	var nx 	     = 30;
 	var nxOffset = 100;
-	var ny 		 = 120;
-	var nyOffset = 120;
+	var ny 		 = 130;
+	var nyOffset = 130;
 	for (var state in ttable) {
 		color = Raphael.getColor();
 		if (ttable[state].isFinal) {
@@ -180,7 +180,7 @@ function graph() {
 		} else {
 			ny = ny + nyOffset;
 		};
-		n = r.aNode(nx+nxOffset, ny, nodeRadius, isFinal, selfConn,
+		n = r.aNode(nx, ny, nodeRadius, isFinal, selfConn,
 					strokeWidth, strokeColor, symbol, labelFontSize);
 		n[1].attr({fill:color, opacity:nodeOpacity, cursor:'move'});
 		n[1].drag(move, start, up);

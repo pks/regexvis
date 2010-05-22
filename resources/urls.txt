@@ -10,3 +10,5 @@ http://swtch.com/~rsc/regexp/regexp1.html
 http://www.gamedev.net/reference/articles/article2170.asp
 
 http://raphaeljs.com/reference.html
+
+http://www.w3.org/TR/SVG/

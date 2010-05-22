@@ -35,6 +35,7 @@ function uiParse() {
 		var dfa = new Nfa2Dfa(nfa);
 		var ttable = dfa.do();
 		graph();
+		disable('#regex');
 		disable('#parseButton');
 	};
 	$('#parseMessage').effect("highlight", {}, 1000);
