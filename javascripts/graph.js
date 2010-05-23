@@ -1,5 +1,5 @@
-// spurce: http://raphaeljs.com/graffle.html
-Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor) {	
+// source: http://raphaeljs.com/graffle.html (extended with labels and arrow heads)
+Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, labelFontSize) {	
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
         obj1 = line.from;
@@ -43,20 +43,38 @@ Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor) {
         y3 = [0, 0, 0, 0, y1 + dy, y1 - dy, y4, y4][res[1]].toFixed(3);
     var path = ["M", x1.toFixed(3), y1.toFixed(3),
 				"C", x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
-	
+	var theLine = this.path(path).attr({stroke: color, fill: "none"});
+	var labelPoint = theLine.getPointAtLength(theLine.getTotalLength()/2);
+	var ahPoint = theLine.getPointAtLength(theLine.getTotalLength());
 	if (line && line.line) {
         line.bg && line.bg.attr({path: path});
         line.line.attr({path: path});
-    } else {
+		line.lbl.remove();
+		line.lbl = this.text(labelPoint.x+10, labelPoint.y+10, line.symbol
+			).attr({fill:'#000', 'font-size': line.labelFontSize});
+		line.ah.remove();
+		line.ah = this.circle(ahPoint.x, ahPoint.y, line.labelFontSize/4
+					).attr({stroke: 'none', fill: line.strokeColor});
+	} else {
         var color = typeof line == "string" ? line : strokeColor;
-        return {
+        var strokeWidth = bg.split("|")[1] || 3;
+        var stroke = bg.split("|")[0];
+        var ret = {
             bg: bg && bg.split && this.path(path
-				).attr({stroke: bg.split("|")[0],
-						fill: "none", "stroke-width": bg.split("|")[1] || 3}),
-            line: this.path(path).attr({stroke: color, fill: "none"}),
+				).attr({stroke: stroke,
+						fill: "none", "stroke-width": strokeWidth}),
+            line: theLine,
             from: obj1,
-			to: obj2
+			to: obj2,
+			symbol: symbol,
+			labelFontSize: labelFontSize,
+			strokeColor: strokeColor,
+			ah: this.circle(ahPoint.x, ahPoint.y, labelFontSize/4
+					).attr({stroke: 'none', fill: strokeColor}),
+			lbl: this.text(labelPoint.x+10, labelPoint.y+10, symbol
+					).attr({fill:'#000', 'font-size': labelFontSize})
         };
+		return ret;
     };
 };
 // source: http://stackoverflow.com/questions/2627436/svg-animation-along-path-with-raphael
@@ -120,7 +138,12 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 	};
 	return res;
 };
-
+// source: http://www.davidcramer.net/code/63/dir-in-javascript.html
+function dir(object) {
+    methods = [];
+    for (z in object) if (typeof(z) != 'number') methods.push(z);
+    return methods.join(', ');
+};
 
 function graph() {
 	var nodeRadius 	 = 30;
@@ -128,7 +151,7 @@ function graph() {
 	var nodeOpacity   = 1;
 	var nodeOpacityHi = .5;
 	var labelFontSize = 16;
-	var strokeWidth = 2;
+	var strokeWidth = 3;
 	var strokeColor = '#ccc';
 	
 	r = Raphael("holder", 1024, 640);
@@ -143,7 +166,7 @@ function graph() {
 				nodeById[this.id][i].translate(dx, dy);
 			};
 			for (var i = connections.length; i--;) {
-            	r.connection(connections[i]);
+				r.connection(connections[i]);
         	};
         	r.safari();
 		},
@@ -201,7 +224,8 @@ function graph() {
 						if (state == statex) {
 							continue;
 						} else {
-							connections.push(r.connection(nodes[k][0], nodes[l][0], strokeWidth, strokeColor));								
+							connections.push(r.connection(nodes[k][0], nodes[l][0],
+								strokeColor, strokeColor, strokeColor, ALPHABET[i], labelFontSize));								
 						};
 					};
 					l++;
@@ -209,5 +233,12 @@ function graph() {
 			};
 		};
 		k++;
+	};
+	return {
+		paper: r,
+		nodes: nodes,
+		nodeById: nodeById,
+		connections: connections,
+		test: 'test'
 	};
 };

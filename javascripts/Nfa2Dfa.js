@@ -1,9 +1,9 @@
 /*
  * Nfa2Dfa
- *
+ * Convert a NFA to a DFA utilizing epsilon closure.
  */
 
-// 
+// Compare two NfaStates for equality.
 function StateCmp(a, b) {
 	if (a.id == b.id) {
 		return true
@@ -11,28 +11,26 @@ function StateCmp(a, b) {
 	return false
 };
 
-// 
+// Compare two stacks filled with NfaStates for euqality.
 function NfaStackCmp(x, y) {
-	var ret = true;
+	var b = true;
 	if (x.length != y.length) { return false }
 	for (var i=0; i < x.length; i++) {
-		ret = ret && StateCmp(x.get(i), y.get(i));
+		b = b && StateCmp(x.get(i), y.get(i));
 	};
-	return ret;
+	return b;
 };
 
-// 
 function Nfa2Dfa(nfa) {
 	this.startState = nfa.getStartState();
     this.finalState = nfa.getFinalState();
 }
 
-// 
+// Accessor functions.
 Nfa2Dfa.prototype.getStartState = function() { return this.startState; };
 Nfa2Dfa.prototype.getFinalState = function() { return this.finalState; };
 
-// 
-var ttable = new Object();
+// Do conversion.
 Nfa2Dfa.prototype.do = function() {
 	var dfaStates = new Stack();
 	var q = new Stack();
@@ -40,47 +38,41 @@ Nfa2Dfa.prototype.do = function() {
 	var p = this.epsclosure(q)
 	var q = p.copy();
 	dfaStates.push(p);
-	//document.write('S '+p.str()+'<br />');
+	
 	var done = new Array();	
-	var ds = null;
-	var j = 0;
+	var ds, j = 0;
 	while (!dfaStates.isEmpty()) {
 		ds = dfaStates.pop();
 		
 		for (var i = 0; i < ALPHABET.length; i++) {
-			a = ALPHABET.substring(i, i+1);
-			var ds2 = ds.copy();
-			x = this.epsclosure(this.move(a, ds));
-			ds = ds2;
+			symbol = ALPHABET.substring(i, i+1);
+			var dsCopy = ds.copy();
+			next = this.epsclosure(this.move(symbol, ds));
+			ds = dsCopy;
 
-			var adone = false;
-			for (var w=0; w < done.length; w++) {
-				if(NfaStackCmp(done[w], x)) {
-					adone = true;
+			var alreadyDone = false;
+			for (var k = 0; k < done.length; k++) {
+				if(NfaStackCmp(done[k], next)) {
+					alreadyDone = true;
 					break;
 				};
 			};
 			
-			var q = ds.str().replace(/ /g, '_');
-			var qq = x.str().replace(/ /g, '_');
-			
-			if (!ttable[q]) {
-				ttable[q] = new Object();
-				if(q.split('_').indexOf(''+this.getFinalState().id) >= 0) {
-					ttable[q].isFinal = true;
+			var dsStr = ds.str().replace(/ /g, '_');			
+			if (!ttable[dsStr]) {
+				ttable[dsStr] = new Object();
+				if(dsStr.split('_').indexOf(''+this.getFinalState().id) >= 0) {
+					ttable[dsStr].isFinal = true;
 				} else {
-					ttable[q].isFinal = false;
+					ttable[dsStr].isFinal = false;
 				};
 			};
 			
-			ttable[q][a] = qq;
+			var nextStr = next.str().replace(/ /g, '_');
+			ttable[dsStr][symbol] = nextStr;
 			
-			if (x.length > 0 && !adone) {
-				for (var h=0; h < j; h++) {
-					//document.write("\t");
-				};
-				//document.write(a+' '+x.str()+'<br />');
-				dfaStates.push(x);
+			if (next.length > 0 && !alreadyDone) {
+				dfaStates.push(next);
 			};
 	    };
 		done.push(ds);
@@ -88,12 +80,9 @@ Nfa2Dfa.prototype.do = function() {
 	};
 };
 
-// 
+// Reachable states over epsilon transitions.
 Nfa2Dfa.prototype.epsclosure = function(q) {
-    var s = null;
-    var t = null;
-
-	var p = new Stack();
+    var s, t, p = new Stack();
 
     while(!q.isEmpty()) {
         s = q.pop();
@@ -102,7 +91,7 @@ Nfa2Dfa.prototype.epsclosure = function(q) {
         if(s.symbol == EPSILON) {
             for (var i = 0; i < 2; i++) {
                 t = s.getFollowUp(i);
-                if (t!=null) {
+                if (t != null) {
  					q.push(t);
                 };
             };
@@ -111,11 +100,10 @@ Nfa2Dfa.prototype.epsclosure = function(q) {
 	return p;
 };
 
-// 
+// Reachable states over transitions with symbol.
 Nfa2Dfa.prototype.move = function(str, p) {
-	var s = null;
-	var q = new Stack();
-
+	var s, q = new Stack();
+	
     while(!p.isEmpty()) {
         s = p.pop();
         s.mark(false);

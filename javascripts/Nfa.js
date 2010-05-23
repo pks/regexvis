@@ -1,6 +1,6 @@
 /*
  * Nfa
- *
+ * NFA consisting of several NfaStates, following Thompson's algorithm.
  */
 function Nfa(symbol) {
 	this.startState = null;
@@ -13,13 +13,13 @@ function Nfa(symbol) {
     };
 };
 
-// 
+// Accessor functions.
 Nfa.prototype.getStartState = function()  { return this.startState; };
 Nfa.prototype.setStartState = function(s) { this.startState = s; };
 Nfa.prototype.getFinalState = function()  { return this.finalState; };
 Nfa.prototype.setFinalState = function(s) { this.finalState = s; };
 
-// 
+// Concatenations: ab
 Nfa.prototype.concat = function(nfa) {
     this.getFinalState().setFollowUp(0, nfa.getStartState());
     this.setFinalState(nfa.getFinalState());
@@ -27,7 +27,7 @@ Nfa.prototype.concat = function(nfa) {
 	return this;
 };
 
-// 
+// Union: (a|b)
 Nfa.prototype.union = function(nfa) {
     var s = new NfaState();
     var t = new NfaState();
@@ -44,7 +44,7 @@ Nfa.prototype.union = function(nfa) {
 	return this;
 };
 
-// 
+// Kleene Star: a*
 Nfa.prototype.kleene = function() {
     var s = new NfaState();
     var t = new NfaState();

@@ -1,16 +1,17 @@
 /*
  * NfaSimulator
- *
+ * Simulate a NFA with a word. Check if regular expression produces word.
  */
 function NfaSimulator(nfa) {
 	this.startState = nfa.getStartState();
     this.finalState = nfa.getFinalState();
 };
 
+// Accessor functions.
 NfaSimulator.prototype.getStartState = function() { return this.startState; };
 NfaSimulator.prototype.getFinalState = function() { return this.finalState; };
 
-// 
+// Main simulate function.
 NfaSimulator.prototype.simulate = function(word) {
 	var a, accepted = false;
     this.p = new Stack();
@@ -26,7 +27,7 @@ NfaSimulator.prototype.simulate = function(word) {
     return accepted;
 };
 
-// 
+// Get reachable states through epsilon transitions.
 NfaSimulator.prototype.epsclosure = function() {
     var s, t, accepted = false;
 
@@ -50,7 +51,7 @@ NfaSimulator.prototype.epsclosure = function() {
     return accepted;
 };
 
-// 
+// Get reachable states through transitions with symbol.
 NfaSimulator.prototype.move = function(symbol) {
     var s;
 
