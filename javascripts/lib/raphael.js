@@ -3056,7 +3056,7 @@ Raphael = (function () {
         animationElements[element.id] && (params.start = animationElements[element.id].start);
         return this.animate(params, ms, easing, callback);
     };
-	// hack! http://groups.google.com/group/raphaeljs/browse_thread/thread/f5dc3ea149d3540b
+	// Hack! http://groups.google.com/group/raphaeljs/browse_thread/thread/f5dc3ea149d3540b
 	Element[proto].moveTo = function(x, y){
             switch (this.type) {
                     case "path":

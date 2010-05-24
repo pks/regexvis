@@ -6,7 +6,7 @@
     <meta http-equiv='Content-Language' content='en_EN' />
     <meta name='author' content='Patrick Simianer' />       
     
-    <title>Visualizing Regular Expressions (Patrick Simianer/'Endliche Automaten' SS2010)</title>
+    <title>Visualizing Regular Expressions (Patrick Simianer, 'Endliche Automaten', SS2010)</title>
     
     <link rel='stylesheet' type='text/css' href='stylesheets/styles.css' />
     
@@ -44,40 +44,51 @@
 		
 		<table>
 			<tr>
-				<td style="text-align:right"><strong style="color:#303030">Alphabet:</strong></td>
-				<td><strong style="color:#303030">
+				<td class="r"><strong class="grayc">Alphabet:</strong></td>
+				<td><strong class="grayc">
 					<script type="text/javascript" charset="utf-8">
 						document.write(ALPHABET.substr(0,ALPHABET.length-1));
-						</script>
-					</strong>
+					</script></strong>
 				</td>	
 			</tr>
 			<tr>
-				<td style='text-align:right'><strong>Regular Expression:</strong></td>
-				<td><input type="text" name="regex" id="regex" value=""
-						onchange='checkLength(this, "#parseButton")' onkeypress="return getKey(event, ALPHABETS)"
-						onmouseout='checkLength(this, "#parseButton")' autocomplete="off" />
+				<td class="r"><strong>Regular Expression:</strong></td>
+				<td><input type="text" name="regex" id="regex" value="" autocomplete="off"
+						onchange='checkLength(this, "#parseButton");'
+						onkeypress="return getKey(event, ALPHABETS);"
+						onmouseout='checkLength(this, "#parseButton");' />
 						<input type="button" name="parseButton" id="parseButton"
-						value="Parse" disabled='disabled' autocomplete="off" onclick="uiParse()" />
+						value="Parse" disabled='disabled' autocomplete="off" onclick="uiParse();" />
 				</td>
 			</tr>
 			<tr>
-				<td style='text-align:right'><strong>Word:</strong></td>
-				<td><input type="text" name="word" id="word" value="" disabled='disabled'
-						onchange='checkLength(this, "#checkButton")' onkeypress="return getKey(event, ALPHABET)"
-						onmouseout='checkLength(this, "#checkButton")' autocomplete="off" />
+				<td class="r"><strong>Word:</strong></td>
+				<td><input type="text" name="word" id="word" value="" disabled="disabled" autocomplete="off"
+						onchange='checkLength(this, "#checkButton");'
+						onkeypress="return graphMoveByInput(event, ALPHABET);"
+						onmouseout='checkLength(this, "#checkButton");' />
 					<input type="button" name="checkButton" id="checkButton"
-						value="Check" disabled='disabled' autocomplete="off" onclick="uiSimulate()" />
+						value="Check" disabled='disabled' autocomplete="off" onclick="uiSimulate();" />
+					</td>
+				</tr>
+				<tr>
+					<td class="r"><strong>Make a Graph:</strong></td>
+					<td>
+						<input type="checkbox" name="graphit" value="" id="graphit" autocomplete="off"
+							checked="checked" onchange="graphit = this.checked;" />
 					</td>
 				</tr>
 		</table>
 			
 		<p>
-			<a class='message gray' href='#' onclick="window.location.reload()"/>Reset</a>
+			<a class='message gray' href='#' onclick="window.location.reload();"/>Reload</a>
 			<span id="parseMessage" class="message" style="display:none"></span>
 			<span id="checkMessage" class="message" style="display:none"></span>
 		</p>
 		
+
+
+
 		<div id="holder"></div>
 		
 	</div>

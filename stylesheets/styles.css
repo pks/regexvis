@@ -1,42 +1,42 @@
 body {
 	background-color: #fff;
-	font-family: Helvetica;
-	color: #000;
+	font-family: 	  Helvetica;
+	color: 			  #000;
 }
-
 a { color: #000 }
-
 input {
 	vertical-align: bottom;
-	font-size: 1.1em;
+	font-size: 		1.1em;
 }
 input[type='button'] {
-	vertical-align:middle;
-	font-size: 1.25em;
-	
+	vertical-align: middle;
+	font-size: 		1.25em;
 }
 input[type='text'] { padding: 4px }
 
+
 div#wrapper {
-	margin-left: auto;
+	margin-left:  auto;
 	margin-right: auto;
-	width: 1024px;
-	height: 100%;
+	width: 		  1024px;
+	height: 	  100%;
 }
-
 div#holder {
-	margin-left: auto;
+	margin-left:  auto;
 	margin-right: auto;
 }
+span#desc { display: none }
 
-span#desc { display:none }
 
 .message {
-	font-weight: bold;
+	font-weight: 		bold;
 	-moz-border-radius: 5px;
-	padding: 4px;
-	text-decoration: none;
+	padding: 		 	4px;
+	text-decoration: 	none;
 }
-.success { background-color: #CDEB8B }
-.failure { background-color: #B02B2C }
-.gray { background-color: #ccc }
+.success    { background-color: #cdeb8b }
+.failure    { background-color: #b02b2c }
+.inprogress { background-color: #ffff88 }
+.gray       { background-color: #ccc }
+.grayc      { color: #ccc }
+.r			{ text-align: right }

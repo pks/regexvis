@@ -10,9 +10,7 @@ http://swtch.com/~rsc/regexp/regexp1.html
 http://www.gamedev.net/reference/articles/article2170.asp
 
 http://raphaeljs.com/reference.html
-
 http://www.w3.org/TR/SVG/
-
 http://github.com/DmitryBaranovskiy/raphael/
 http://groups.google.com/group/raphaeljs/browse_thread/thread/f7f7cffa82331503/3d40c581a0e6f50b?lnk=raot
 http://groups.google.com.au/group/raphaeljs/browse_thread/thread/c4bf09bd58546625/6de8fd1b07a65315?lnk=gst&q=graffle#6de8fd1b07a65315

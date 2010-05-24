@@ -1,5 +1,5 @@
-// source: http://raphaeljs.com/graffle.html (extended with labels and arrow heads)
-Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, labelFontSize) {	
+// Source: http://raphaeljs.com/graffle.html (extended with labels and arrow heads)
+Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, labelFontSize, name1, name2) {	
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
         obj1 = line.from;
@@ -72,18 +72,20 @@ Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, lab
 			ah: this.circle(ahPoint.x, ahPoint.y, labelFontSize/4
 					).attr({stroke: 'none', fill: strokeColor}),
 			lbl: this.text(labelPoint.x+10, labelPoint.y+10, symbol
-					).attr({fill:'#000', 'font-size': labelFontSize})
+					).attr({fill:'#000', 'font-size': labelFontSize}),
+			name1: name1,
+			name2: name2
         };
 		return ret;
     };
 };
-// source: http://stackoverflow.com/questions/2627436/svg-animation-along-path-with-raphael
+// Source: http://stackoverflow.com/questions/2627436/svg-animation-along-path-with-raphael
 Raphael.fn.circlePath = function(x , y, r) {      
 	return "M"+x+","+(y-r)+"A"+r+","+r+",0,1,1,"+(x-0.1)+","+(y-r)+" z";
 };
-// nodes
+// The nodes
 Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
-			strokeWidth, strokeColor,labelText, labelFontSize) {
+			strokeWidth, strokeColor,labelText, labelFontSize, name) {
 	var res = this.set();
 	// two circle element for dragging and binding connections
 	var connector = this.circle(x, y, r).attr({stroke:0}).attr({fill: 'none'});
@@ -136,15 +138,20 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 	if (isFinal) {
 		res.push(ci);
 	};
-	return res;
+	return {
+		node: res,
+		name: name
+	};
 };
-// source: http://www.davidcramer.net/code/63/dir-in-javascript.html
+// Source: http://www.davidcramer.net/code/63/dir-in-javascript.html
 function dir(object) {
     methods = [];
     for (z in object) if (typeof(z) != 'number') methods.push(z);
     return methods.join(', ');
 };
 
+
+// Drawing the graph.
 function graph() {
 	var nodeRadius 	 = 30;
 	var nodeRadiusHi = nodeRadius + 10;
@@ -162,8 +169,8 @@ function graph() {
 	},
 		move = function (dx, dy) {
 			this.moveTo(dx, dy);
-			for (var i = nodeById[this.id].length - 1; i >= 0; i--){
-				nodeById[this.id][i].translate(dx, dy);
+			for (var i = nodeById[this.id].node.length - 1; i >= 0; i--){
+				nodeById[this.id].node[i].translate(dx, dy);
 			};
 			for (var i = connections.length; i--;) {
 				r.connection(connections[i]);
@@ -174,8 +181,9 @@ function graph() {
 			this.animate({r:nodeRadius, opacity:nodeOpacity}, 500, ">");
 		};
 	// nodes
-	var nodes 		= [];
-	var nodeById	= [];
+	var nodes 			= [];
+	var nodeById		= [];
+	var graphNodeByName = [];
 	var i = 0, n, color, isFinal, selfConn = false, selfConnSymbol;
 	var nx 	     = 30;
 	var nxOffset = 100;
@@ -204,11 +212,12 @@ function graph() {
 			ny = ny + nyOffset;
 		};
 		n = r.aNode(nx, ny, nodeRadius, isFinal, selfConn,
-					strokeWidth, strokeColor, symbol, labelFontSize);
-		n[1].attr({fill:color, opacity:nodeOpacity, cursor:'move'});
-		n[1].drag(move, start, up);
+					strokeWidth, strokeColor, symbol, labelFontSize, state);
+		n.node[1].attr({fill:color, opacity:nodeOpacity, cursor:'move'});
+		n.node[1].drag(move, start, up);
 		nodes.push(n);
-		nodeById[n[1].id] = nodes[i];
+		nodeById[n.node[1].id] = nodes[i];
+		graphNodeByName[state] = n;
 		nx = nx + nxOffset;
 		i++;
 	};
@@ -224,8 +233,9 @@ function graph() {
 						if (state == statex) {
 							continue;
 						} else {
-							connections.push(r.connection(nodes[k][0], nodes[l][0],
-								strokeColor, strokeColor, strokeColor, ALPHABET[i], labelFontSize));								
+							connections.push(r.connection(nodes[k].node[0], nodes[l].node[0],
+								strokeColor, strokeColor, strokeColor, ALPHABET[i], labelFontSize,
+								nodes[k].name, nodes[l].name));								
 						};
 					};
 					l++;
@@ -239,6 +249,6 @@ function graph() {
 		nodes: nodes,
 		nodeById: nodeById,
 		connections: connections,
-		test: 'test'
+		graphNodeByName: graphNodeByName
 	};
 };
