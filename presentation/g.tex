@@ -1,0 +1,267 @@
+% g.tex
+% Patrick Simianer <p@simianer.de>
+% 2010-05-24
+\documentclass{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+
+
+\begin{document}
+
+
+$a*$\\
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] (A)              		  {$\{2, 3\}$};
+  \node[state,accepting]         (B) [below of=A] {$\{0, 1, 3\}$};
+
+  \path[->] (A) edge              node {$\ \ \ \ a$} (B)
+			(B) edge [loop below] node {$a$} ();
+\end{tikzpicture}
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial]   (s2)              		 {$2$};
+  \node[state,accepting] (s3) [right of=s2]      {$3$};
+  \node[state] (s0) [below left of=s2] {$0$};
+  \node[state] (s1) [below left of=s3] {$1$};
+  
+
+\path[->] (s2) edge              node {$\epsilon$} (s3)
+		  (s2) edge              node {$a$} (s0)
+		(s0) edge     [bend right]         node {$\epsilon$} (s1)
+		(s1) edge     [bend right]         node {$a$} (s0)
+		(s1) edge              node {$\epsilon$} (s3);
+
+\end{tikzpicture}
+
+
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial]   (s2)              		 {$2$};
+  \node[state] 			 (s0) [right of=s2]      {$0$};
+  \node[state] 			 (s1) [right of=s0] 	 {$1$};
+  \node[state,accepting] (s3) [right of=s1]      {$3$};
+  
+
+\path[->] (s2) edge    [bend right]          node {$\epsilon$} (s3)
+		  (s2) edge              			 node {$\epsilon$} (s0)
+		  (s0) edge              			 node {$a$} (s1)
+		  (s1) edge        [bend right]      node {$\epsilon$} (s0)
+		  (s1) edge              			 node {$\epsilon$} (s3);
+\end{tikzpicture}
+
+
+$(a|b)*$\\
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] 			 (s6)              				  	{$6$};
+  \node[state]	 				 (s4)      [right of=s6]       		{$4$};
+  \node[state]	 				 (s0)      [above right of=s4]      {$0$};
+  \node[state]	 				 (s2)      [below right of=s4]      {$2$};
+  \node[state]	 				 (s1)      [right of=s0]        	{$1$};
+  \node[state]	 				 (s3)      [right of=s2]     		{$3$};
+  \node[state]	 				 (s5)      [below right of=s1]      {$5$};
+  \node[state,accepting] 		 (s7)      [right of=s5]            {$7$};
+
+\path[->] (s6) edge    node {$\epsilon$} (s4)
+		  (s4) edge    node {$\epsilon$} (s0)
+	      (s4) edge    node {$\epsilon$} (s2)
+		  (s0) edge    node {$a$} (s1)
+		  (s2) edge    node {$b$} (s3)
+		  (s1) edge    node {$\epsilon$} (s5)
+		  (s3) edge    node {$\epsilon$} (s5)
+		  (s5) edge    node {$\epsilon$} (s4)
+		(s5) edge    node {$\epsilon$} (s7)
+		(s6) edge [bend right]   node {$\epsilon$} (s7);
+\end{tikzpicture}
+
+
+\begin{tikzpicture}[shorten >=1pt,node distance=4cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial]   (A)              		 {$\{6,7,4,0,2\}$};
+  \node[state] 			 (B) [below left  of=A]  {$\{1,5,7,4,0,2\}$};
+  \node[state,accepting] (C) [below right of=A]  {$\{3,5,7,4,0,2\}$};
+  
+
+\path[->] (A) edge              node {$a$} (B)
+ 		  (A) edge              node {$b$} (C)
+		  (B) edge    [loop below]          node {$a$} (B)
+		  (C) edge    [loop below]          node {$b$} (C)
+		(B) edge    [bend right]          node {$b$} (C)
+		(C) edge    [bend right]          node {$a$} (B);
+\end{tikzpicture}
+
+$a*b|b*a$\\
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] 			 (s12)              {$12$};
+
+  \node[state]         (s2)  [above right of=s12]  	{$2$};
+  \node[state]         (s3)  [right of=s2]  			{$3$};
+  \node[state]         (s0)  [above of=s2]  			{$0$};
+  \node[state]         (s1)  [above of=s3]  			{$1$};
+  \node[state]         (s4)  [right of=s3]  			{$4$};
+  \node[state]         (s5)  [right of=s4]  			{$5$};
+
+  \node[state]         (s8) [below right of=s12]   	{$8$};
+  \node[state]         (s6) [below of=s8]   			{$6$};
+  \node[state]         (s7) [right of=s6]   			{$7$};
+  \node[state]         (s9) [right of=s8]   			{$9$};
+  \node[state]         (s10) [right of=s9]   			{$10$};
+  \node[state]         (s11) [right of=s10]   		{$11$};
+
+  \node[state,accepting]         (s13) [below right of=s5]   	{$13$};
+
+\path[->]
+(s12) edge              node {$\epsilon$} (s2)
+(s2) edge              node {$\epsilon$} (s0)
+(s0) edge    [bend right]          node {$a$} (s1)
+(s1) edge    [bend right]          node {$\epsilon$} (s0)
+(s1) edge              node {$\epsilon$} (s3)
+(s2) edge              node {$\epsilon$} (s3)
+(s3) edge              node {$\epsilon$} (s4)
+(s4) edge              node {$b$} (s5)
+(s5) edge              node {$\epsilon$} (s13)
+
+(s12) edge              node {$\epsilon$} (s8)
+(s8) edge              node {$\epsilon$} (s6)
+(s6) edge  [bend right]            node {$b$} (s7)
+(s7) edge  [bend right]            node {$\epsilon$} (s6)
+(s8) edge              node {$\epsilon$} (s9)
+(s7) edge              node {$\epsilon$} (s9)
+(s9) edge              node {$\epsilon$} (s10)
+(s10) edge              node {$a$} (s11)
+(s11) edge              node {$\epsilon$} (s13);
+\end{tikzpicture}
+
+
+\begin{tikzpicture}[shorten >=1pt,node distance=5cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] 			 (A)              				{$\{12,2,0,3,4,8,6,9,10\}$};
+
+  \node[state,accepting] 		 (B)   [above right of=A]      {$\{1, 3, 4, 0, 11, 13\}$};
+  \node[state] 		 (C)   [right of=B]           {$\{1, 3, 4, 0\}$};
+  \node[state,accepting] 		 (D)   [right of=C]           {$\{5, 13\}$};
+
+  \node[state,accepting] 		 (E)   [below right of=A]           {$\{7,9,10,6,5,13\}$};
+  \node[state,accepting] 		 (F)   [right of=E]           {$\{7,9,10,6\}$};
+  \node[state,accepting] 		 (G)   [right of=F]           {$\{11,13\}$};
+
+
+\path[->] (A) edge node {$a$} (B)
+		  (B) edge [bend left] node {$b$} (D)
+		  (B) edge node {$a$} (C)
+          (C) edge [loop below] node {$a$} (C)
+		  (C) edge node {$b$} (D)
+		
+		(A) edge node {$b$} (E)
+		(E) edge [bend right] node {$a$} (G)
+		
+				  (E) edge node {$b$} (F)
+		          (F) edge [loop above] node {$b$} (F)
+				  (F) edge node {$a$} (G);
+\end{tikzpicture}
+
+
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] (A)              		  {};
+  \node[state,accepting]         (B) [right of=A] {};
+
+  \path[->] (A) edge              node {$a$} (B);
+\end{tikzpicture}\\
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] (A)              		  {};
+  \node[state,accepting]         (B) [right of=A] {};
+
+  \path[->] (A) edge              node {$\epsilon$} (B);
+\end{tikzpicture}
+
+$ab$\\
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] 			 (A)              		  {};
+  \node[state,accepting]         (B) [right of=A] 		  {};
+  \node[state]         (C) [right of=B] 		  {};
+  \node[state,accepting]         (D) [right of=C] 		  {};
+
+  \path[->]
+(A) edge              node {$a$} (B)
+(B) edge              node {$\epsilon$} (C)
+(C) edge              node {$b$} (D);
+\end{tikzpicture}
+
+
+
+$(a|b)$\\
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] 			 (A)              		  {};
+  \node[state]         (B) [above right of=A] 		  {};
+  \node[state]         (C) [below right of=A] 		  {};
+  \node[state,accepting]         (D) [right of=B] 		  {};
+  \node[state,accepting]         (E) [right of=C] 		  {};
+  \node[state,accepting]         (F) [above right of=E] 		  {};
+
+\path[->]  (A) edge node {$\epsilon$} (B)
+(A) edge node {$\epsilon$} (C)
+
+(B) edge node {$a$} (D)
+(C) edge node {$b$} (E)
+
+
+(D) edge node {$\epsilon$} (F)
+(E) edge node {$\epsilon$} (F)
+;
+\end{tikzpicture}
+
+
+
+
+$a*$\\
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,>=stealth',thick]
+  \tikzstyle{every state}=[draw=blue!50,very thick,fill=blue!20]
+
+  \node[state,initial] 			 (A)              		  {};
+  \node[state]         (B) [right of=A] 		  {};
+  \node[state,accepting]         (C) [right of=B] 		  {};
+  \node[state,accepting]         (D) [right of=C] 		  {};
+
+  \path[->]
+(A) edge              node {$\epsilon$} (B)
+(B) edge              node {$a$} (C)
+(C) edge  [bend right]            node {$\epsilon$} (B)
+
+(C) edge              node {$\epsilon$} (D)
+(A) edge       [bend right]       node {$\epsilon$} (D);
+
+\end{tikzpicture}
+
+
+\end{document}
+
