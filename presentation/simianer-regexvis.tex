@@ -1,4 +1,4 @@
-% template-beamer.tex
+% simianer-regexvis.tex
 % Patrick Simianer <p@simianer.de>
 % YYYY-MM-DD
 \documentclass[ignorenonframetext]{beamer}
@@ -20,11 +20,12 @@
 \usepackage[ngerman]{babel}
 \usepackage{lmodern}
 \usepackage{framed}
+\usepackage{color}
 
 
-\title[ktitel]{Autor(en)\\ Titel}
-\author{Patrick~Simianer \tiny 2508483\\\normalsize 1985-01-18}
-\date{Veranstaltung bei Dozent\\ Universitiät Heidelberg im Wintersemester 1985/86}
+\title[regexvis]{Patrick Simianer\\ Visualisierung Regulärer Ausdrücke}
+\author{Patrick~Simianer \tiny 2508483\\\normalsize 2010-06-28}
+\date{Endliche Automaten HS bei Dr. Karin Haenelt\\ Universitiät Heidelberg im Sommersemester 2010}
 
 \AtBeginSection[]{%
 \begin{frame}
@@ -38,132 +39,141 @@
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame[plain]{\titlepage}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[plain]
     \frametitle{Gliederung}
     \tableofcontents
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Pause, Abblenden}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Vorhaben}
 
-
-\subsection{Pause}
 
 \begin{frame}
-    \frametitle{Test von Pause}
-
-    \begin{itemize}
-        \item Motivation 
-        .....
-        \pause
-        \item Experiment
-        \begin{itemize}
-            \item Aufbau des Experiments
-            .....
-        \end{itemize}
-    \end{itemize}
+    \frametitle{Vorhaben}
+	
+	\begin{itemize}
+		\item[] \textbf{Darstellung der Funktionsweise regulärer Ausdrücke}
+		\item[]
+		\item[$\Rightarrow$] Eigene Implementierung
+	\end{itemize}
 \end{frame}
-
-
-\subsection{Abblenden}
 
 \begin{frame}
-    \frametitle{Abblenden}
-    
-    \begin{itemize}
-        \item<1-> Normal LaTeX class.
-        \item<2-> Easy overlays.
-        \item<3-> No external programs needed.      
-    \end{itemize}
+    \frametitle{asdf}
+
+	\begin{itemize}
+		\item Mögliche Implementierungen
+		\begin{enumerate}
+			\item Backtracking
+			\item Endliche Automaten
+		\end{enumerate}
+	\end{itemize}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Nur ein Test}
-
-
-\subsection{Test Blocks}
 
 \begin{frame}
-    \frametitle{Test Blocks}
-    
-    \begin{alert}{Titel des Blocks}
-        Dies steht in einem Block
-    \end{alert}
-    
-    \begin{example}{Titel des 2. Blocks}
-        Dies steht in einem Block\\ Das auch ...
-    \end{example}
-    
-    \begin{block}{Titel des 2. Blocks}
-        Dies steht in einem Block\\ Das auch ...
-    \end{block}
-  
-    \begin{framed}
-        \begin{block}{Titel des 2. Blocks}
-            Dies steht in einem Block\\ Das auch ...
-        \end{block}
-    \end{framed}
+    \frametitle{Notwendige Schritte/Umsetzung}
+	
+	\begin{enumerate}
+		\item \textbf{Parsen} des Ausdrucks
+		\item Umsetzung in einen \textbf{nichtdeterministischen endlichen Automaten}
+		\item Übersetzung in einen \textbf{deterministischen} endlichen Automaten
+		\item Graphische \textbf{Darstellung} des Automaten und dessen \textbf{Simulation}
+		\item[]
+		\item[$\Rightarrow$] Umsetzung im \textbf{Browser}: \textit{JavaScript} (\textit{jQuery}, \textit{Rapha\"elJS}) , \textit{HTML}, \textit{CSS}, \textit{SVG}
+	\end{enumerate}
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsection{Nochmal Blocks}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Parsing des regulären Ausdrucks}
 
 \begin{frame}
-    \frametitle{Nochmal Blocks}
-    
-    \begin{block}{Titel des Blocks}
-        Dies steht in einem Block\\ Das auch ...
-    \end{block}
-    \begin{block}{Titel des 2. Blocks}
-        Dies steht in einem Block\\ Das auch ...
-    \end{block}
+    \frametitle{Parsing des regulären Ausdrucks}
+
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\subsection{Recursive Descent Methode}
+\begin{frame}
+    \frametitle{Recursive Descent Methode}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Verbatim}
-
-
-\begin{frame}[fragile]
-\frametitle{Verbatim}
-\begin{verbatim}
-a
-b
-c
-d
-e
-f
-g
-\end{verbatim}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Parsing des regulären Ausdrucks}
+
+\begin{frame}
+    \frametitle{Parsing des regulären Ausdrucks}
+
+\end{frame}
+
+\begin{frame}[plain]
+    \frametitle{Thompson's Algorithmus}
+	
+	\begin{itemize}
+		\item[{\color{red}\texttt{ab}}]
+\begin{centering}\includegraphics[scale=0.22]{ab.pdf}\end{centering}
+		\item[]
+		\item[{\color{green}\texttt{a*}}]
+\begin{centering}\includegraphics[scale=0.22]{astar.pdf}\end{centering}
+		\item[]
+		\item[{\color{blue}\texttt{(a|b)}}]
+\begin{centering}\includegraphics[scale=0.22]{aorb.pdf}\end{centering}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[plain]
+    \frametitle{Thompson's Algorithmus: Beispiel}
+	\begin{itemize}
+		\item[] Regulärer Ausdruck: \texttt{a(a|b)c*}
+		\item[]
+		\item[]
+	\end{itemize}
+	\begin{centering}
+		\includegraphics[scale=0.23]{aabc.pdf}
+	\end{centering}
+\end{frame}
+
+
+\subsection{Recursive Descent Methode}
+\begin{frame}
+    \frametitle{Recursive Descent Methode}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[allowframebreaks]
     \frametitle{Literatur}
     \bibliographystyle{alpha}
     \bibliography{beamer}
     \nocite{*}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+\begin{frame}[plain]
+\end{frame}
 
 
 \end{document}
