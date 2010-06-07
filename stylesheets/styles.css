@@ -10,6 +10,7 @@ input {
 }
 input[type='button'] {
 	vertical-align: middle;
+    margin-bottom:  2px;
 	font-size: 		1.25em;
 }
 input[type='text'] { padding: 4px }
@@ -18,14 +19,16 @@ input[type='text'] { padding: 4px }
 div#wrapper {
 	margin-left:  auto;
 	margin-right: auto;
-	width: 		  1024px;
-	height: 	  100%;
+	width: 		  1000px;
 }
 div#holder {
 	margin-left:  auto;
 	margin-right: auto;
 }
-span#desc { display: none }
+span#desc {
+    font-family: Georgia;
+    display:     none;
+}
 
 
 .message {

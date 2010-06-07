@@ -161,7 +161,7 @@ function graph() {
 	var strokeWidth = 3;
 	var strokeColor = '#ccc';
 	
-	r = Raphael("holder", 1024, 640);
+	r = Raphael("holder", 1000, 510);
 	
 	// dragging, see: http://raphaeljs.com/touches.html
 	var start = function () {

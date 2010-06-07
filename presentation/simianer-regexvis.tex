@@ -21,9 +21,17 @@
 \usepackage{lmodern}
 \usepackage{framed}
 \usepackage{color}
+\usepackage{multirow}
+\usepackage{listings}
+\lstset{basicstyle=\scriptsize\ttfamily, commentstyle=\color{gray}, emphstyle=\sffamily\bfseries}
+\lstset{keywordstyle=\sffamily\bfseries, commentstyle=\color{gray}, stringstyle=\color{black}}
+\lstset{numbers=none, numberstyle=\tiny}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
 
 
-\title[regexvis]{Patrick Simianer\\ Visualisierung Regulärer Ausdrücke}
+\title[regexvis]{Patrick Simianer\\ Visualisierung regulärer Ausdrücke}
 \author{Patrick~Simianer \tiny 2508483\\\normalsize 2010-06-28}
 \date{Endliche Automaten HS bei Dr. Karin Haenelt\\ Universitiät Heidelberg im Sommersemester 2010}
 
@@ -55,111 +63,252 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Vorhaben}
+\section{Einleitung}
 
 
+\subsection{"Uberlegungen}
 \begin{frame}
-    \frametitle{Vorhaben}
+    \frametitle{Visualisierung regul"arer Ausdr"ucke /1}
 	
 	\begin{itemize}
-		\item[] \textbf{Darstellung der Funktionsweise regulärer Ausdrücke}
-		\item[]
-		\item[$\Rightarrow$] Eigene Implementierung
+        \item[] Wie soll die Visualisierung aussehen?
+        \begin{enumerate}
+            \item Hervorheben von \textit{\textbf{Matches}} oder \textbf{Gruppen} in einem String oder Text
+            \item Darstellung und Simulation durch einen \textbf{Automaten}
+        \end{enumerate}
+        \item[]
 	\end{itemize}
+    \begin{enumerate}
+        \item Zu Hauf zu vorhanden, \\ basierend auf RE-Implementierung der jeweiligen Sprache\\ $\rightarrow$ keine ``\textit{step by step}''-Visualisierung m"oglich
+        \item Grafische Umsetzung schwierig,\\ eigene RE-Implementierung n"otig\\ $\rightarrow$ jeder Schritt nachvollziehbar
+    \end{enumerate}
 \end{frame}
 
-\begin{frame}
-    \frametitle{asdf}
 
-	\begin{itemize}
-		\item Mögliche Implementierungen
-		\begin{enumerate}
-			\item Backtracking
-			\item Endliche Automaten
-		\end{enumerate}
-	\end{itemize}
+\begin{frame}
+    \frametitle{Visualisierung regul"arer Ausdr"ucke /2}
+
+	\begin{enumerate}
+		\item Wie k"onnen regul"are Ausdr"ucke m"oglichst einfach und effizient implementiert werden?
+		\begin{itemize}
+			\item ``Herk"ommliche'' \textbf{Backtracking}-Methode (\textit{Perl}, \textit{PCRE})
+			\item[$\Rightarrow$] Direkte Konstruktion eines \textbf{endlichen Automaten}
+		\end{itemize}
+        \item[]
+        \item Soll der Automat dargestellt werden und wenn ja, wie?
+        \begin{itemize}
+            \item[$\Rightarrow$] \textbf{Ja}, im besten Fall mit Animationen...
+        \end{itemize}
+        \item[]
+        \item In welcher Umgebung k"onnen alle Teile (1. Parser, 2. GUI, 3. Visualisierung) gut implementiert werden?
+        \begin{itemize}
+            \item[$\Rightarrow$] \textbf{Browser}-basiert (1. \textit{JavaScript}, 2. \textit{HTML}, 3. \textit{SVG})
+        \end{itemize}
+	\end{enumerate}
 \end{frame}
 
+
+\subsection{Protoypisches Vorgehen}
 \begin{frame}
-    \frametitle{Notwendige Schritte/Umsetzung}
+    \frametitle{Protoypisches Vorgehen}
 	
 	\begin{enumerate}
 		\item \textbf{Parsen} des Ausdrucks
 		\item Umsetzung in einen \textbf{nichtdeterministischen endlichen Automaten}
-		\item Übersetzung in einen \textbf{deterministischen} endlichen Automaten
-		\item Graphische \textbf{Darstellung} des Automaten und dessen \textbf{Simulation}
+		\item Übersetzung des NDEA in einen \textbf{deterministischen} endlichen Automaten
+		\item Grafische \textbf{Darstellung} des Automaten und dessen \textbf{Simulation}
 		\item[]
-		\item[$\Rightarrow$] Umsetzung im \textbf{Browser}: \textit{JavaScript} (\textit{jQuery}, \textit{Rapha\"elJS}) , \textit{HTML}, \textit{CSS}, \textit{SVG}
+		\item[] Umsetzung im \textbf{Browser}: \textit{JavaScript} (\textit{Rapha\"el} f"ur \textit{SVG}, \textit{jQuery}), \textit{HTML}+\textit{CSS}
 	\end{enumerate}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Parsing des regulären Ausdrucks}
-
-\begin{frame}
-    \frametitle{Parsing des regulären Ausdrucks}
-
-\end{frame}
-
-
-\subsection{Recursive Descent Methode}
-\begin{frame}
-    \frametitle{Recursive Descent Methode}
-
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Parsing des regulären Ausdrucks}
-
-\begin{frame}
-    \frametitle{Parsing des regulären Ausdrucks}
-
-\end{frame}
-
+\subsection{Konkreter Aufbau}
 \begin{frame}[plain]
+    %\frametitle{Konkreter Aufbau}
+    
+    \begin{center}
+        \begin{figure}
+            \includegraphics[scale=0.65]{a1.pdf}
+            \caption{Konkreter System-Aufbau}
+        \end{figure}
+    \end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Einfaches Parsing regul"arer Ausdr"ucke}
+
+
+\subsection{Recursive Descent-Methode}
+\begin{frame}[fragile]
+    \frametitle{\textit{Recursive Descent}-Methode}
+
+\begin{columns}
+    \column{4cm}
+    \textbf{Grammatik:}
+    \hrule
+    \column{7.5cm}
+    \textbf{Code:}
+    \hrule
+\end{columns}
+
+\begin{columns}
+    \column{4cm}
+    {\scriptsize\begin{tabular}{ll}
+        \textbf{expr} & $\rightarrow$ term | term \underline{|} expr \\
+        term & $\rightarrow$ factor | term \\
+        factor & $\rightarrow$ atom kleene \\
+        atom & $\rightarrow$ literal | \underline{(} expr \underline{)}\\
+        kleene & $\rightarrow$ \underline{$*$} kleene | $\epsilon$\\
+        literal & $\rightarrow$ \underline{a} | \underline{b} | \underline{c} | \underline{\%}
+    \end{tabular}}
+
+\column{7.5cm}
+\lstset{language=C++, emph={RegexParser}}
+\begin{lstlisting}
+RegexParser.prototype.expr = function() {
+    var nfa = this.term();
+    if (this.trymatch('|')) {
+        return nfa.union(this.expr());
+    };
+    return nfa;
+};
+\end{lstlisting}
+\end{columns}
+
+\begin{itemize}
+    \item Nahezu direktes "Ubersetzen einer Grammatik\footnote{keine Links-Rekursionen, sonst: Endlosschleife} in den Quelltext des Parsers (LL(1))
+    \item $\forall$ Nichtterminale $\exists$ Funktion, welche die rechte Seite der jeweiligen Regel behandelt
+    \item Direkte Erzeugung des NDEA, mittels Konstruktion nach Thompson
+    %\item Schnell, einfach und effizient
+\end{itemize}
+
+\end{frame}
+
+
+\subsection{Thompson's Algorithmus}
+\begin{frame}
     \frametitle{Thompson's Algorithmus}
 	
 	\begin{itemize}
-		\item[{\color{red}\texttt{ab}}]
-\begin{centering}\includegraphics[scale=0.22]{ab.pdf}\end{centering}
+		\item[{\color{red}Konkatenation: \texttt{ab}}]
+\begin{center}\includegraphics[scale=0.22]{ab.pdf}\end{center}
 		\item[]
-		\item[{\color{green}\texttt{a*}}]
-\begin{centering}\includegraphics[scale=0.22]{astar.pdf}\end{centering}
+		\item[{\color{green}H"ulle: \texttt{a*}}]
+\begin{center}\includegraphics[scale=0.22]{astar.pdf}\end{center}
 		\item[]
-		\item[{\color{blue}\texttt{(a|b)}}]
-\begin{centering}\includegraphics[scale=0.22]{aorb.pdf}\end{centering}
+		\item[{\color{blue}Vereinigung: \texttt{(a|b)}}]
+\begin{center}\includegraphics[scale=0.22]{aorb.pdf}\end{center}
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[plain]
+
+\subsection{Beispiel}
+\begin{frame}
     \frametitle{Thompson's Algorithmus: Beispiel}
-	\begin{itemize}
-		\item[] Regulärer Ausdruck: \texttt{a(a|b)c*}
-		\item[]
-		\item[]
-	\end{itemize}
-	\begin{centering}
+    
+    Regulärer Ausdruck: \texttt{a(a|b)c*}
+    \vspace{0.5cm}
+	
+    \begin{centering}
 		\includegraphics[scale=0.23]{aabc.pdf}
 	\end{centering}
-\end{frame}
-
-
-\subsection{Recursive Descent Methode}
-\begin{frame}
-    \frametitle{Recursive Descent Methode}
-
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{"Uberf"uhrung NDEA zu einem DEA}
+
+
+\subsection*{Einleitung}
+\begin{frame}
+    \frametitle{Einleitung}
+
+    \begin{itemize}
+        \item[] Warum den erzeugten NDEA in einen DEA "uberf"uhren?
+        \item[]
+        \item \textit{trade-off}:
+        \begin{tabular}{rll}
+            Platzbedarf & $-$NDEA & \textbf{$\mathbf{+}$DEA}\\
+            Erstellungszeit & \textbf{$\mathbf{+}$NDEA} & $-$DEA\\
+            Ausf"uhrungszeit & $-$NDEA & \textbf{$\mathbf{+}$DEA}\\
+        \end{tabular}
+        \item[]
+        \item NDEAs\footnote{insbesondere die hier erzeugten} umfassen f"ur gew"ohnlich sehr viele Zust"ande, die Darstellung eines DEA ist praktikabler         
+    \end{itemize}
+
+\end{frame}
+
+
+\subsection{$\epsilon$-Abschluss}
+\begin{frame}[fragile]
+    \frametitle{$\epsilon$-Abschluss}
+    
+        \textbf{Pseudo-Code} 
+        \hrule
+        \begin{columns}
+        \column{5cm}
+\lstset{language=C++, emph={epsclosure,move}}
+\begin{lstlisting}
+epsclosure(NFAState) {
+
+}
+\end{lstlisting}
+
+        \column{5cm}
+\lstset{language=C++, emph={move}}        
+\begin{lstlisting}
+nfa2dfa(NFA) {
+
+}
+\end{lstlisting}
+
+        \end{columns}
+\end{frame}
+
+
+\subsection{Beispiel}
+\begin{frame}[plain]
+    \frametitle{NDEA $\rightarrow$ DEA Beispiel}
+    
+    Regul"arer Ausdruck: \texttt{(a|b)*}
+
+    \begin{center}
+        \includegraphics[scale=0.27]{aorbstar0.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}[plain]
+
+\begin{center}
+    \begin{tabular}{c|c|c}
+        Dfa ID & Symbol & $\rightarrow$Dfa ID\\
+        \hline
+        \multirow{2}{*}{\{6, 7, 4, 0, 2\}}   & $a$ & \{1, 5, 7, 4, 0, 2\} \\
+                            & $b$ & \{3, 5, 7, 4, 0, 2\} \\
+        \hline
+        \multirow{2}{*}{\{1, 5, 7, 4, 0, 2\}} & $a$ & \{1, 5, 7, 4, 0, 2\}\\
+                             & $b$ & \{3, 5, 7, 4, 0, 2\}\\
+        \hline
+         \multirow{2}{*}{\{3, 5, 7, 4, 0, 2\}}& $a$ & \{1, 5, 7, 4, 0, 2\}\\
+                             & $b$ &  \{3, 5, 7, 4, 0, 2\}\\
+    \end{tabular} 
+\end{center}
+
+\begin{center}
+    \includegraphics[scale=.175]{aorbstar.pdf}
+\end{center}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -169,10 +318,35 @@
     \bibliography{beamer}
     \nocite{*}
 \end{frame}
+
+\begin{frame}
+    \frametitle{Resourcen}
+
+    \begin{itemize}
+        \item \textit{Rapha\"el} JavaScript SVG Library (\url{http://raphaeljs.com/})
+        \item \textit{jQuery} JavaScript Library (\url{http://jquery.com/})
+        \item Scalable Vector Graphics (\textit{SVG}) 1.1 Specification (\url{http://www.w3.org/TR/SVG/})
+        \item Writing your own regular expression parser (\url{http://www.codeproject.com/KB/recipes/OwnRegExpressionsParser.aspx})
+    \end{itemize}
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\section{Demo}
 \begin{frame}[plain]
+    \begin{center}
+        \Huge{Demo}
+    \end{center}
+\end{frame}
+
+
+\section{Weiterentwicklung}
+\begin{frame}
+    \frametitle{Weiterentwicklung}
+
+    \begin{itemize}
+        \item Vorhanden: * | ()
+    \end{itemize}
 \end{frame}
 
 

@@ -29,23 +29,16 @@
 
 	<div id="wrapper">
 		
-		<p style="line-height:1.3em">
+		<p style="line-height:1.3em;text-align:justify;width:52%">
 			<a class="message gray" href="#" onclick="$('#desc').toggle();">
 				<strong>Description</strong></a>
-			<span id="desc">&nbsp;Lorem ipsum dolor sit amet,
-			consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-			labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-			nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-			consequat. Duis aute irure dolor in reprehenderit in voluptate
-			velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-			occaecat cupidatat non proident, sunt in culpa qui officia
-			deserunt mollit anim id est laborum.</span>
+			<span id="desc">&nbsp;Enter a regular expression (<span style="font-family:Courier">'*'</span>, <span style="font-family:Courier">'|'</span> and <span style="font-family:Courier">'()'</span> supported). The usable <strong>alphabet</strong> is shown above the input box. Tick <strong>'Make a Graph'</strong> to enable or disable graph generation. The generated graph is <strong>deterministic finite state automata</strong>. Once the (correct) expression is parsed, it is possible to simulate the automata by entering a accepted or non-accepted <strong>word</strong> in the lower input box.<br /></span>
 		</p>
 		
 		<table>
-			<tr>
+			<tr style="width:100%">
 				<td class="r"><strong class="grayc">Alphabet:</strong></td>
-				<td><strong class="grayc">
+				<td style="width:400px"><strong class="grayc">
 					<script type="text/javascript" charset="utf-8">
 						document.write(ALPHABET.substr(0,ALPHABET.length-1));
 					</script></strong>
