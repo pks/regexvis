@@ -106,6 +106,7 @@ function getKey(e, set) {
 };
 
 // Moving inside the graph by input symbols.
+// setTimeout ?
 function graphMoveByInput(e) {
 	// no graph
 	if(!graphit) return;

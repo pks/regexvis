@@ -68,7 +68,7 @@
 
 \subsection{"Uberlegungen}
 \begin{frame}
-    \frametitle{Visualisierung regul"arer Ausdr"ucke /1}
+    \frametitle{Visualisierung regul"arer Ausdr"ucke}
 	
 	\begin{itemize}
         \item[] Wie soll die Visualisierung aussehen?
@@ -79,7 +79,7 @@
         \item[]
 	\end{itemize}
     \begin{enumerate}
-        \item Zu Hauf zu vorhanden, \\ basierend auf RE-Implementierung der jeweiligen Sprache\\ $\rightarrow$ keine ``\textit{step by step}''-Visualisierung m"oglich
+        \item Es existieren bereits viele Implementierungen, \\ basierend auf RE-Implementierung der jeweiligen Sprache\\ $\rightarrow$ keine ``\textit{step by step}''-Visualisierung m"oglich
         \item Grafische Umsetzung schwierig,\\ eigene RE-Implementierung n"otig\\ $\rightarrow$ jeder Schritt nachvollziehbar
     \end{enumerate}
 \end{frame}
@@ -115,7 +115,7 @@
 	\begin{enumerate}
 		\item \textbf{Parsen} des Ausdrucks
 		\item Umsetzung in einen \textbf{nichtdeterministischen endlichen Automaten}
-		\item Übersetzung des NDEA in einen \textbf{deterministischen} endlichen Automaten
+		\item Übersetzung eine NDEA in einen \textbf{deterministischen} endlichen Automaten
 		\item Grafische \textbf{Darstellung} des Automaten und dessen \textbf{Simulation}
 		\item[]
 		\item[] Umsetzung im \textbf{Browser}: \textit{JavaScript} (\textit{Rapha\"el} f"ur \textit{SVG}, \textit{jQuery}), \textit{HTML}+\textit{CSS}
@@ -184,6 +184,7 @@ RegexParser.prototype.expr = function() {
     \item Nahezu direktes "Ubersetzen einer Grammatik\footnote{keine Links-Rekursionen, sonst: Endlosschleife} in den Quelltext des Parsers (LL(1))
     \item $\forall$ Nichtterminale $\exists$ Funktion, welche die rechte Seite der jeweiligen Regel behandelt
     \item Direkte Erzeugung des NDEA, mittels Konstruktion nach Thompson
+    \item Max. $2m$ Zust"ande, $4m$ Transitionen ($m$ L"ange des Alphabets)
     %\item Schnell, einfach und effizient
 \end{itemize}
 
@@ -254,23 +255,49 @@ RegexParser.prototype.expr = function() {
         \textbf{Pseudo-Code} 
         \hrule
         \begin{columns}
-        \column{5cm}
-\lstset{language=C++, emph={epsclosure,move}}
+        \column{4.5cm}
+\lstset{language=C++, emph={epsclosure,add,move,pop,push,stack,foreach}}
 \begin{lstlisting}
-epsclosure(NFAState) {
-
+epsclosure(dState): stack s
+foreach nState in dState {
+ s.push(nState)
 }
+while s not empty { 
+ nState1 = s.pop()
+ foreach nState1 e> nState2 {
+  if nState2 not in dState {
+   dState.add(nState2)
+   s.push(nState2)
+  }
+ }
+}
+return dState
 \end{lstlisting}
 
-        \column{5cm}
-\lstset{language=C++, emph={move}}        
+        \column{4.3cm}
+\lstset{language=C++, emph={nfa2dfa,add,DFA,NFA,stack,epsclosure,move,pop,push,foreach}}        
 \begin{lstlisting}
-nfa2dfa(NFA) {
-
+nfa2dfa(NFA): stack s, DFA d
+s.push(epsclosure(nfa.start))
+d.add(epsclosure(nfa.start))
+while s not empty {
+ dState1 = s.pop()
+ foreach ch in ALPHA {
+  dState2 = move(dState1, ch)
+  next = epsclosure(dState2)
+  if next not in DFA {
+   d.add(dState ch> next)
+  }
+ }
 }
+return d
 \end{lstlisting}
 
         \end{columns}
+\begin{itemize}
+    \item $\forall p \in Q : E(\{p\}) = \{ q \in Q : p \rightarrow_\epsilon q \}$
+    \item \textbf{Laufzeit:} $O(nm^2)$ (bei Vorberechung aller $\epsilon$-Abschl"usse: $O(m)$)  
+\end{itemize}
 \end{frame}
 
 
@@ -289,6 +316,8 @@ nfa2dfa(NFA) {
 \begin{frame}[plain]
 
 \begin{center}
+    \frametitle{NDEA $\rightarrow$ DEA Beispiel /2}
+    
     \begin{tabular}{c|c|c}
         Dfa ID & Symbol & $\rightarrow$Dfa ID\\
         \hline
@@ -320,7 +349,7 @@ nfa2dfa(NFA) {
 \end{frame}
 
 \begin{frame}
-    \frametitle{Resourcen}
+    \frametitle{Ressourcen}
 
     \begin{itemize}
         \item \textit{Rapha\"el} JavaScript SVG Library (\url{http://raphaeljs.com/})
@@ -345,7 +374,12 @@ nfa2dfa(NFA) {
     \frametitle{Weiterentwicklung}
 
     \begin{itemize}
-        \item Vorhanden: * | ()
+        \item Vorhanden: $*$, \texttt{|}, \texttt{()}
+        \item[]
+        \item Zeichenklassen: \texttt{.}, \texttt{\textbackslash w}, \texttt{\textbackslash d},  \lbrack\ \rbrack, $\hdots$ $\rightarrow$ Einfach implementierbar, Vorverarbeitung der Eingabe
+        \item Operatoren: $+$, ?, \{$m$, $n$\}, $\hdots$ $\rightarrow$ Ebenfalls durch Vorverarbeitung l"osbar, beziehungsweise durch Anpassung des Automaten
+        \item[]
+        \item \textit{Lookahead} oder \textit{lookbehind} sind leider nicht mit endlichen Automaten zu implementieren, da die zugrunde liegenden Grammatiken nicht mehr regul"ar w"aren.
     \end{itemize}
 \end{frame}
 
