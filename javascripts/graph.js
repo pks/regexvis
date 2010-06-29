@@ -116,7 +116,7 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 		// arrow head
 		var ahSize 	= r/8;
 		var ahRef 	= selfConn.getPointAtLength(selfConn.getTotalLength()-1)
-		var ahAngle = Math.atan2(ahRef.x-p2.x,p2.x-ahRef.y);
+		var ahAngle = Math.atan2(ahRef.x-p2.x,p2.x-(-ahRef.y));
 	    ahAngle 	= (ahAngle / (2 * Math.PI)) * 360;
 	    var ah = this.path("M" + ahRef.x + " " + ahRef.y +
 			" L" + (ahRef.x - ahSize) + " " + (ahRef.y - ahSize) +

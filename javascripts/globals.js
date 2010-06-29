@@ -9,3 +9,5 @@ var REDELIMITER = '$';
 var ttable = new Object();
 var g;
 var graphit = true;
+var lock = false;
+

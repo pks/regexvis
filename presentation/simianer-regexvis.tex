@@ -74,13 +74,13 @@
         \item[] Wie soll die Visualisierung aussehen?
         \begin{enumerate}
             \item Hervorheben von \textit{\textbf{Matches}} oder \textbf{Gruppen} in einem String oder Text
-            \item Darstellung und Simulation durch einen \textbf{Automaten}
+            \item Darstellung und Simulation anhand eines \textbf{Automaten}
         \end{enumerate}
         \item[]
 	\end{itemize}
     \begin{enumerate}
-        \item Es existieren bereits viele Implementierungen, \\ basierend auf RE-Implementierung der jeweiligen Sprache\\ $\rightarrow$ keine ``\textit{step by step}''-Visualisierung m"oglich
-        \item Grafische Umsetzung schwierig,\\ eigene RE-Implementierung n"otig\\ $\rightarrow$ jeder Schritt nachvollziehbar
+        \item Es existieren bereits viele Implementierungen, \\ basierend auf RE-Implementierung der jeweiligen Sprache.\\ $\rightarrow$ Keine "`\textit{step by step}"'-Visualisierung m"oglich
+        \item Grafische Umsetzung schwierig,\\ eigene RE-Implementierung n"otig\\ $\rightarrow$ Jeder Schritt der Erkennung nachvollziehbar
     \end{enumerate}
 \end{frame}
 
@@ -91,18 +91,18 @@
 	\begin{enumerate}
 		\item Wie k"onnen regul"are Ausdr"ucke m"oglichst einfach und effizient implementiert werden?
 		\begin{itemize}
-			\item ``Herk"ommliche'' \textbf{Backtracking}-Methode (\textit{Perl}, \textit{PCRE})
+			\item "`Herk"ommliche"' \textit{backtracking}-Methode (\textit{Perl}, \textit{PCRE})
 			\item[$\Rightarrow$] Direkte Konstruktion eines \textbf{endlichen Automaten}
 		\end{itemize}
         \item[]
-        \item Soll der Automat dargestellt werden und wenn ja, wie?
+        \item Soll der Automat dargestellt werden -- und wenn ja, wie?
         \begin{itemize}
             \item[$\Rightarrow$] \textbf{Ja}, im besten Fall mit Animationen...
         \end{itemize}
         \item[]
         \item In welcher Umgebung k"onnen alle Teile (1. Parser, 2. GUI, 3. Visualisierung) gut implementiert werden?
         \begin{itemize}
-            \item[$\Rightarrow$] \textbf{Browser}-basiert (1. \textit{JavaScript}, 2. \textit{HTML}, 3. \textit{SVG})
+            \item[$\Rightarrow$] Im \textbf{Browser} (1. \textit{JavaScript}, 2. \textit{HTML}, 3. \textit{SVG})
         \end{itemize}
 	\end{enumerate}
 \end{frame}
@@ -115,10 +115,10 @@
 	\begin{enumerate}
 		\item \textbf{Parsen} des Ausdrucks
 		\item Umsetzung in einen \textbf{nichtdeterministischen endlichen Automaten}
-		\item Übersetzung eine NDEA in einen \textbf{deterministischen} endlichen Automaten
-		\item Grafische \textbf{Darstellung} des Automaten und dessen \textbf{Simulation}
+		\item Übersetzung des NDEA in einen \textbf{deterministischen} endlichen Automaten
+		\item Grafische \textbf{Darstellung} des Automaten und dessen \textbf{Simulation} durch Animation
 		\item[]
-		\item[] Umsetzung im \textbf{Browser}: \textit{JavaScript} (\textit{Rapha\"el} f"ur \textit{SVG}, \textit{jQuery}), \textit{HTML}+\textit{CSS}
+		\item[] Umsetzung im Browser: \textit{JavaScript} (\textit{Rapha\"el} f"ur \textit{SVG}, \textit{jQuery}), \textit{HTML}+\textit{CSS}
 	\end{enumerate}
 \end{frame}
 
@@ -168,7 +168,7 @@
     \end{tabular}}
 
 \column{7.5cm}
-\lstset{language=C++, emph={RegexParser}}
+\lstset{language=C++, emph={RegexParser,expr}}
 \begin{lstlisting}
 RegexParser.prototype.expr = function() {
     var nfa = this.term();
@@ -181,19 +181,19 @@ RegexParser.prototype.expr = function() {
 \end{columns}
 
 \begin{itemize}
-    \item Nahezu direktes "Ubersetzen einer Grammatik\footnote{keine Links-Rekursionen, sonst: Endlosschleife} in den Quelltext des Parsers (LL(1))
+    \item Nahezu direktes "Ubersetzen einer Grammatik\footnote{keine Links-Rekursionen, sonst: Endlosschleife} in den Quelltext des Parsers, \textit{top-down} (LL(1))
     \item $\forall$ Nichtterminale $\exists$ Funktion, welche die rechte Seite der jeweiligen Regel behandelt
-    \item Direkte Erzeugung des NDEA, mittels Konstruktion nach Thompson
-    \item Max. $2m$ Zust"ande, $4m$ Transitionen ($m$ L"ange des Alphabets)
+    \item Direkte Erzeugung des NDEA, mittels Konstruktion nach Thompson in $O(|r|)$ ($|r|$ L"ange des regul"aren Ausdrucks)
+    \item Ergebnis: Automat mit max. $2|r|$ Zust"anden, $4|r|$ Transitionen
     %\item Schnell, einfach und effizient
 \end{itemize}
 
 \end{frame}
 
 
-\subsection{Thompson's Algorithmus}
+\subsection{Konstruktion nach Thompson}
 \begin{frame}
-    \frametitle{Thompson's Algorithmus}
+    \frametitle{Konstruktion nach Thompson}
 	
 	\begin{itemize}
 		\item[{\color{red}Konkatenation: \texttt{ab}}]
@@ -210,7 +210,7 @@ RegexParser.prototype.expr = function() {
 
 \subsection{Beispiel}
 \begin{frame}
-    \frametitle{Thompson's Algorithmus: Beispiel}
+    \frametitle{Thompsons Algorithmus: Beispiel}
     
     Regulärer Ausdruck: \texttt{a(a|b)c*}
     \vspace{0.5cm}
@@ -235,14 +235,17 @@ RegexParser.prototype.expr = function() {
     \begin{itemize}
         \item[] Warum den erzeugten NDEA in einen DEA "uberf"uhren?
         \item[]
-        \item \textit{trade-off}:
+        \item[] \textit{trade-off}:
         \begin{tabular}{rll}
-            Platzbedarf & $-$NDEA & \textbf{$\mathbf{+}$DEA}\\
-            Erstellungszeit & \textbf{$\mathbf{+}$NDEA} & $-$DEA\\
-            Ausf"uhrungszeit & $-$NDEA & \textbf{$\mathbf{+}$DEA}\\
+                             & NDEA & DEA\\
+            Platzbedarf      & $2|r| = m$, $4|r| = n$ & $2^{m}$\\
+            Erstellungszeit  & $O(|r|)$  & $O(|r|^2 2^{|r|})$, $O(|r|^3)$\\
+            Simulation       & $O(|x|(m+n))$                    & $O(|x|)$ \\
+                             & $\approx O(|x|*|r|)$ & \\
         \end{tabular}
+        \item[]\footnotesize $|x|$ L"ange des Eingabe-Strings; bei Erstellungszeit DEA: links \textit{worst-case}, rechts der Durchschnitsfall\normalsize
         \item[]
-        \item NDEAs\footnote{insbesondere die hier erzeugten} umfassen f"ur gew"ohnlich sehr viele Zust"ande, die Darstellung eines DEA ist praktikabler         
+        \item Die hier erzeugten NDEA umfassen f"ur gew"ohnlich sehr viele Zust"ande, die Darstellung eines DEA ist praktikabler
     \end{itemize}
 
 \end{frame}
@@ -295,8 +298,10 @@ return d
 
         \end{columns}
 \begin{itemize}
-    \item $\forall p \in Q : E(\{p\}) = \{ q \in Q : p \rightarrow_\epsilon q \}$
-    \item \textbf{Laufzeit:} $O(nm^2)$ (bei Vorberechung aller $\epsilon$-Abschl"usse: $O(m)$)  
+    \item[]  \footnotesize \texttt{a e> b}: $\epsilon$-"Ubergang von Z. \texttt{a} nach \texttt{b}; \texttt{a ch> b}: "Ubergang mit Zeichen \texttt{ch}
+    \item[$\bullet$] \textbf{Formal:} $\forall p \in Q : E(\{p\}) = \{ q \in Q : p \rightarrow_\epsilon q \}$ ($\epsilon$-Abschl. v. a. $p$ aus $Q$)
+    \item[$\bullet$] \textbf{Simulation} des NDEA, oder vollst"andige Erzeugung eines \textbf{DEA}
+    %\item \textbf{Laufzeit:} $O(k(n +m))$, $k$ L"ange der Eingabe, $n$ NFA Zust"ande, $m$ NFA "Uberg"ange  
 \end{itemize}
 \end{frame}
 
@@ -340,6 +345,14 @@ return d
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\section*{Fragen}
+\begin{frame}[plain]
+    \begin{center}
+        \Huge{Fragen?}
+    \end{center}
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[allowframebreaks]
     \frametitle{Literatur}
@@ -379,7 +392,7 @@ return d
         \item Zeichenklassen: \texttt{.}, \texttt{\textbackslash w}, \texttt{\textbackslash d},  \lbrack\ \rbrack, $\hdots$ $\rightarrow$ Einfach implementierbar, Vorverarbeitung der Eingabe
         \item Operatoren: $+$, ?, \{$m$, $n$\}, $\hdots$ $\rightarrow$ Ebenfalls durch Vorverarbeitung l"osbar, beziehungsweise durch Anpassung des Automaten
         \item[]
-        \item \textit{Lookahead} oder \textit{lookbehind} sind leider nicht mit endlichen Automaten zu implementieren, da die zugrunde liegenden Grammatiken nicht mehr regul"ar w"aren.
+        \item \textit{Lookahead} oder \textit{lookbehind} sind leider nicht ohne Weiteres mit endlichen Automaten zu implementieren, da die zugrunde liegenden Grammatiken nicht mehr regul"ar w"aren.
     \end{itemize}
 \end{frame}
 

@@ -20,7 +20,7 @@ function graph_inprogress() {
 	$('#word').removeClass('success');
 	$('#word').removeClass('failure');
 	$('#word').addClass('inprogress');
-	window.g.mover.attr({fill: '#ffff88'});
+	window.g.mover.attr({fill: 'yellow'});//'#ffff88'});
 };
 function graph_success() {
 	$('#checkMessage').html('Word accepted');
@@ -30,7 +30,7 @@ function graph_success() {
 	$('#word').removeClass('inprogress');
 	$('#word').addClass('success');
 	$('#checkMessage').effect("highlight", {}, 1000);
-	window.g.mover.attr({fill: '#cdeb8b'});
+	window.g.mover.attr({fill: 'green'});//'#cdeb8b'});
 };
 function graph_failure() {
 	$('#checkMessage').html('Word not accepted');
@@ -40,7 +40,7 @@ function graph_failure() {
 	$('#word').removeClass('inprogress');
 	$('#word').addClass('failure');
 	$('#checkMessage').effect("highlight", {}, 1000);
-	window.g.mover.animate({fill: '#b02b2c'}, 250);
+	window.g.mover.animate({fill: 'red'});//'#b02b2c'}, 250);
 };
 
 // Call of RegexParser.parse() from UI.
@@ -108,6 +108,19 @@ function getKey(e, set) {
 // Moving inside the graph by input symbols.
 // setTimeout ?
 function graphMoveByInput(e) {
+    if (lock) {
+        if (failedInputs) {
+            lock = false;
+        } else {
+            //var w = $('#word').attr('value');
+            //$('#word').attr('value', w.substr(0, w.length-1));
+            lock = false;
+            return false; 
+        }
+    } else {
+        lock = true;
+    }
+
 	// no graph
 	if(!graphit) return;
 	
@@ -138,7 +151,7 @@ function graphMoveByInput(e) {
 			var mx = g.mover.attr('cx');
 			var my = g.mover.attr('cy');
 			var ll = g.paper.path('M'+mx+','+my+' '+mx+','+(my-25)+'Z').attr({stroke: 0});
-			g.mover.animateAlong(ll, 250, "bounce");
+			window.setTimeout(function() { g.mover.animateAlong(ll, 250, "bounce"); }, 250);
 			window.inSameState.pop();
 			if (ttable[window.gCurrentState.name].isFinal) {
 				graph_success();
@@ -150,10 +163,10 @@ function graphMoveByInput(e) {
 		
 		// go back one state
 		window.gPrevState = gPrevStates.pop();
-		g.mover.animate(
-			{cx:gPrevState.node[1][0].cx.baseVal.value, cy:gPrevState.node[1][0].cy.baseVal.value},
-			750, "bounce"
-		);
+		window.setTimeout(function() {
+            g.mover.animate({cx:gPrevState.node[1][0].cx.baseVal.value, cy:gPrevState.node[1][0].cy.baseVal.value}, 250);
+            lock = false; 
+        }, 250);
 		window.gCurrentState = gPrevState;
 		if (ttable[window.gCurrentState.name].isFinal) {
 			graph_success();
@@ -178,8 +191,15 @@ function graphMoveByInput(e) {
 	
 	// no state change
 	if(gNextState.name == gCurrentState.name) {
-		g.mover.animateAlong(gCurrentState.node[4], 500);
+		window.setTimeout(function() {
+            g.mover.animateAlong(gCurrentState.node[4], 350);lock = false;
+        }, 125);
 		window.inSameState.push(true);
+        if (ttable[window.gCurrentState.name].isFinal) {
+			graph_success();
+		} else {
+			graph_inprogress();
+		};
 		return;
 	} else {
 		// state change
@@ -198,9 +218,10 @@ function graphMoveByInput(e) {
 			).attr({stroke:'none'});
 	   (function(g, line) {
 	        setTimeout(function() {
-	          	g.mover.animateAlong(line, 500)
+	          	g.mover.animateAlong(line, 250);
+                lock = false;
 				return line;
-			}, 1);
+			}, 250);
 	    })(g, line);
 	};
 	window.gPrevStates.push(gCurrentState);
@@ -210,3 +231,4 @@ function graphMoveByInput(e) {
 		graph_success();
 	};
 };
+
