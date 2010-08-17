@@ -122,7 +122,7 @@ function uiParse() {
 		$('#regex').addClass('success');
 		enable('#word');
 		var dfa = new Nfa2Dfa(nfa);
-		var ttable = dfa.do();
+		var ttable = dfa.convert();
 		disable('#regex');
 		disable('#parseButton');
 		if(!graphit) return;

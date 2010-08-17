@@ -32,7 +32,7 @@ Nfa2Dfa.prototype.getStartState = function() { return this.startState; };
 Nfa2Dfa.prototype.getFinalState = function() { return this.finalState; };
 
 // Do conversion.
-Nfa2Dfa.prototype.do = function() {
+Nfa2Dfa.prototype.convert = function() {
 	var dfaStates = new Stack();
 	var q = new Stack();
 	q.push(this.getStartState());
