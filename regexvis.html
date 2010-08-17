@@ -1,90 +1,150 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- 2010-05-07 -->
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-    <meta http-equiv='Content-Language' content='en_EN' />
-    <meta name='author' content='Patrick Simianer' />       
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="en_EN" />
+    <meta name="author" content="Patrick Simianer" />       
     
-    <title>Visualizing Regular Expressions (Patrick Simianer, 'Endliche Automaten', SS2010)</title>
+    <title>Visualizing Regular Expressions | regexvis</title>
     
-    <link rel='stylesheet' type='text/css' href='stylesheets/styles.css' />
-    
-    <script type='text/javascript' src='javascripts/lib/raphael.js'></script>
-    <script type='text/javascript' src='javascripts/lib/jquery.js'></script>
-    <script type='text/javascript' src='javascripts/lib/jquery-ui.js'></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css" />
 
-    <script type='text/javascript' src='javascripts/globals.js'></script>
-    <script type='text/javascript' src='javascripts/NfaState.js'></script>
-    <script type='text/javascript' src='javascripts/Nfa.js'></script>
-    <script type='text/javascript' src='javascripts/RegexParser.js'></script>
-    <script type='text/javascript' src='javascripts/Stack.js'></script>       
-    <script type='text/javascript' src='javascripts/NfaSimulator.js'></script>
-    <script type='text/javascript' src='javascripts/Nfa2Dfa.js'></script>
-    <script type='text/javascript' src='javascripts/graph.js'></script>
-	<script type="text/javascript" src='javascripts/uifunc.js'></script>
+    <!-- http://raphaeljs.com --> 
+    <script type="text/javascript" src="javascripts/lib/raphael.js"></script>
+    <!-- http://jquery.com -->
+    <script type="text/javascript" src="javascripts/lib/jquery.js"></script>
+    <!-- http://jqueryui.com -->
+    <script type="text/javascript" src="javascripts/lib/jquery-ui.js"></script>
+    <!-- http://bassistance.de/jquery-plugins/jquery-plugin-tooltip/ -->
+    <script type="text/javascript" src="javascripts/lib/jquery.bgiframe.js"></script>
+    <script type="text/javascript" src="javascripts/lib/jquery.dimensions.js"></script>
+    <script type="text/javascript" src="javascripts/lib/jquery.tooltip.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/jquery.tooltip.css" />    
+
+    <script type="text/javascript" src="javascripts/globals.js"></script>
+    <script type="text/javascript" src="javascripts/NfaState.js"></script>
+    <script type="text/javascript" src="javascripts/Nfa.js"></script>
+    <script type="text/javascript" src="javascripts/RegexParser.js"></script>
+    <script type="text/javascript" src="javascripts/Stack.js"></script>       
+    <script type="text/javascript" src="javascripts/NfaSimulator.js"></script>
+    <script type="text/javascript" src="javascripts/Nfa2Dfa.js"></script>
+    <script type="text/javascript" src="javascripts/graph.js"></script>
+	<script type="text/javascript" src="javascripts/ui.js"></script>
 </head>
 
 <body>
 
 	<div id="wrapper">
-		
-		<p style="line-height:1.3em;text-align:justify;width:52%">
-			<a class="message gray" href="#" onclick="$('#desc').toggle();">
-				<strong>Description</strong></a>
-			<span id="desc">&nbsp;Enter a regular expression (<span style="font-family:Courier">'*'</span>, <span style="font-family:Courier">'|'</span> and <span style="font-family:Courier">'()'</span> supported). The usable <strong>alphabet</strong> is shown above the input box. Tick <strong>'Make a Graph'</strong> to enable or disable graph generation. The generated graph is <strong>deterministic finite state automata</strong>. Once the (correct) expression is parsed, it is possible to simulate the automata by entering a accepted or non-accepted <strong>word</strong> in the lower input box.<br /></span>
-		</p>
-		
+
+
+        <!-- meta -->
+		<div id="top">
+			<a id="reloadButton" class="message gray grayc" href='#' />Reload</a>
+            <a id="descButton" class="message gray grayc" href="#">Description</a>
+
+			<span id="desc">This is a little tool to visualize <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>
+                using a <a href="http://en.wikipedia.org/wiki/Finite_state_automata">deterministic finite state automaton</a>.
+                It was developed for a seminar by Karin Haenelt -- 
+                "<a href="http://kontext.fraunhofer.de/haenelt/kurs/FSA/index.html">Endliche Automaten für die Sprachverarbeitung</a>"
+                in summer term 2010. It is written in pure JavaScript (plus some SVG and underlying HTML) using the
+                <a href="http://raphaeljs.com/">Raphaël</a> and <a href="http://jquery.com/">jQuery</a> libraries. The corresponding
+                presentation can be downloaded <a href="">here</a> (in German).<br />
+                The project includes a parser for basic regular expressions, a simulator for testing if a given word is included in the
+                language defined by the regular expression and another relatively fancy simulator for checking includance graphically step
+                by step. These parts are based on several standard algorithms which can be found in the following literature:
+                <ul>
+                    <li><strong>Recursive descent parser, Thompson's algorithm:</strong>
+                        <em>Algorithmen in Java</em> (Hans Werner Lang);
+                        <em>Regular expression search algorithm</em> (K. Thompson);
+                        <em>Compilers. Principles, Techniques & Tools.</em> (Aho et al)</li>
+                    <li><strong>Epsilon closure:</strong> <em>The treatment of epsilon moves in subset construction.</em> (Gertjan van Noord)</li>
+                </ul>
+                The user interface should be self explanatory and fail safe but you can obtain help for each step by hovering over The
+                corresponding <span style="font-family:Courier">?</span> symbol. If something goes wrong just click <em>Reload</em>.
+                <p class="small r">Click <em>Description</em> again to hide this text.</p>
+            </span>
+		</div>
+        <!-- /meta -->
+	
+
+        <!-- form -->
 		<table>
-			<tr style="width:100%">
-				<td class="r"><strong class="grayc">Alphabet:</strong></td>
-				<td style="width:400px"><strong class="grayc">
-					<script type="text/javascript" charset="utf-8">
-						document.write(ALPHABET.substr(0,ALPHABET.length-1));
-					</script></strong>
-				</td>	
-			</tr>
 			<tr>
-				<td class="r"><strong>Regular Expression:</strong></td>
-				<td><input type="text" name="regex" id="regex" value="" autocomplete="off"
-						onchange='checkLength(this, "#parseButton");'
-						onkeypress="return getKey(event, ALPHABETS);"
-						onmouseout='checkLength(this, "#parseButton");' />
-						<input type="button" name="parseButton" id="parseButton"
-						value="Parse" disabled='disabled' autocomplete="off" onclick="uiParse();" />
+                <td><div class="message gray grayc">-1</div></td>
+				<td style="width:200px" class="r grayc"><strong>Alphabet:</strong></td>
+				<td style="width:500px">
+                    <strong class="grayc"><div id="alphabet"></div></strong>
 				</td>
+                <td>
+                    <div title="Alphabet: - The alphabet that is usable in the regular expression. The symbol
+                        <span style='font-family:Courier'>%</span> and all special characters (see help for <span style='font-family:Courier'>Regular Expression</span>) are forbidden and will be removed, any whitespace will be omitted.
+                        Input will be treated case sensitive. Double click to change the usable symbols (click outside the
+                        input box to save)." id="helpAlphabet" class="message green greenc help">?</div>
+                </td>
 			</tr>
+
+                        <tr>
+                <td><div class="message gray grayc">&nbsp;0</div></td>					
+                <td class="r grayc"><strong>Draw Graph:</strong></td>
+			    <td>
+				    <input id="graphit" type="checkbox" name="graphit" value="" autocomplete="off" checked="checked" />
+			    </td>
+                <td>
+                    <div title="Draw Graph: - Tick if you want a graphical simulation (default), untick for simple check."
+                        id="helpGraph" class="message green greenc help">?</div>
+                </td>
+		    </tr>
+
 			<tr>
-				<td class="r"><strong>Word:</strong></td>
-				<td><input type="text" name="word" id="word" value="" disabled="disabled" autocomplete="off"
-						onchange='checkLength(this, "#checkButton");'
-						onkeypress="return graphMoveByInput(event, ALPHABET);"
-						onmouseout='checkLength(this, "#checkButton");' />
-					<input type="button" name="checkButton" id="checkButton"
-						value="Check" disabled='disabled' autocomplete="off" onclick="uiSimulate();" />
-					</td>
-				</tr>
-				<tr>
-					<td class="r"><strong>Make a Graph:</strong></td>
-					<td>
-						<input type="checkbox" name="graphit" value="" id="graphit" autocomplete="off"
-							checked="checked" onchange="graphit = this.checked;" />
-					</td>
-				</tr>
-		</table>
+                <td><div class="message gray grayc">&nbsp;1</div></td>
+				<td class="r"><strong>Regular Expression:</strong></td>
+				<td>
+                    <input id="regex" type="text" name="regex" value="" autocomplete="off" />
+					<input type="button" name="parseButton" id="parseButton" value="Parse" disabled='disabled' autocomplete="off" />
+				</td>
+                <td>
+                    <div title="Regular Expression: - Enter a regular expression here, the special symbols
+                        <span style='font-family:Courier'>*</span>, <span style='font-family:Courier'>|</span> and
+                        <span style='font-family:Courier'>()</span> are currently supported. Click on <em>Parse</em> to parse
+                        the string. If <em>Draw Graph</em> is ticked the corresponding graph will be drawn below." 
+                        id="helpRe" class="message green greenc help">?</div>
+                </td>
+			</tr>
 			
+            <tr>
+                <td><div class="message gray grayc">&nbsp;2</div></td>
+				<td class="r"><strong>Word:</strong></td>
+				<td>
+                    <input id="word" type="text" name="word" value="" disabled="disabled" autocomplete="off" />
+					<input id="checkButton" type="button" name="checkButton" value="Check" disabled='disabled' autocomplete="off" />
+			    </td>
+                <td>
+                    <div title="Word: - Enter the word to be simulated here. The simulation process will be shown step by step
+                        if <em>Draw Graph</em> was ticked before parsing, otherwise click on check to simulate the word.
+                        Backspace works as one would expect. <span class='small'>Do not type too fast while graphical simulation,
+                        because synchronization is not perfect, you can press backspace several times to overcome occurred problems.</span>"
+                        id="helpWord" class="message green greenc help">?</div>
+                </td>
+	        </tr>
+		</table>
+        <!-- /form -->
+	    
+
+        <!-- messages -->
 		<p>
-			<a class='message gray' href='#' onclick="window.location.reload();"/>Reload</a>
 			<span id="parseMessage" class="message" style="display:none"></span>
 			<span id="checkMessage" class="message" style="display:none"></span>
 		</p>
+        <!-- /messages -->
 		
 
+		<!-- svg drawing area -->
+        <div id="holder"></div>
+		<!-- /svg drawing area -->
 
 
-		<div id="holder"></div>
-		
 	</div>
 
 </body>
 </html>
+

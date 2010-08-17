@@ -2,6 +2,8 @@
  * NfaSimulator
  * Simulate a NFA with a word. Check if regular expression produces word.
  */
+
+
 function NfaSimulator(nfa) {
 	this.startState = nfa.getStartState();
     this.finalState = nfa.getFinalState();
@@ -64,3 +66,4 @@ NfaSimulator.prototype.move = function(symbol) {
         };
     };
 };
+

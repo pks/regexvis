@@ -1,3 +1,58 @@
+/*
+ * UI
+ * functions, intialization
+ */
+
+
+// initialization of ui 
+$(function() {
+    // #alphabet
+    $('#alphabet').html(ALPHABET.substr(0,ALPHABET.length-1));
+    // #regex 
+    $('#regex').change(function() { checkLength(this, "#parseButton"); });
+    $('#regex').keypress(function(event) { return getKey(event, ALPHABETS); });
+    $('#regex').mouseout(function() { checkLength(this, "#parseButton"); });
+    // #parseButton
+    $('#parseButton').click(function() {
+        uiParse();
+        alphabetEditable=false;
+    });
+    // #word
+    $('#word').change(function() { checkLength(this, "#checkButton"); });
+    $('#word').keypress(function(event) { return graphMoveByInput(event, ALPHABET); });
+    $('#word').mouseout(function() { checkLength(this, "#checkButton"); });
+    // #checkButton
+    $('#checkButton').click(function() { uiSimulate(); });
+    // #graphit
+    $('#graphit').change(function() { graphit = this.checked; });
+    // #reloadButton
+    $('#reloadButton').click(function() { window.location.reload(); });
+    // #descButton
+    $('#descButton').click(function() { $('#desc').toggle(); });
+    // in place edit of alphabet
+    $('body').click(function() { 
+        if (alphabetEdit) {
+            ALPHABET = $('#alphabetInput').attr('value').replace(/\s/g,'').replace(/%/g, '').replace(/\*/g, '');
+            ALPHABET = ALPHABET.replace(/\(/g, '').replace(/\)/g, '').replace(/\|/g, '')+STOPSYMBOL;
+            ALPHABETS = ALPHABET+SPECIALS;
+            $('#alphabetInput').remove();
+            $('#alphabet').html('<strong class="grayc">'+ALPHABET.substr(0, ALPHABET.length-1)+'</strong>');
+            alphabetEdit = false;
+        }
+    });
+    $('#alphabet').dblclick(function() {
+        if (alphabetEditable) {
+            alphabetEdit = true;
+            $(this).html('<input id="alphabetInput" type="text" value="'+ALPHABET.substr(0,ALPHABET.length-1)+'" />');
+            $('#alphabetInput').click(function(event) {
+                event.stopPropagation();
+            });
+        }
+    });
+    // tooltips
+    $('*.help').tooltip({showBody: " - "});
+});
+
 // Enable/disable if input length is > 0.
 function checkLength(el, bId) {
 	if (graphit && (el.id == 'word')) return;
@@ -30,7 +85,9 @@ function graph_success() {
 	$('#word').removeClass('inprogress');
 	$('#word').addClass('success');
 	$('#checkMessage').effect("highlight", {}, 1000);
-	window.g.mover.attr({fill: 'green'});//'#cdeb8b'});
+    if(graphit) {
+	    window.g.mover.attr({fill: 'green'});//'#cdeb8b'});
+    }
 };
 function graph_failure() {
 	$('#checkMessage').html('Word not accepted');
@@ -45,6 +102,11 @@ function graph_failure() {
 
 // Call of RegexParser.parse() from UI.
 function uiParse() {
+    var regex = $('#regex').attr('value');
+    if (regex.match(/\*(\(|\))*\*/)) {
+        alert("Supernumerous * symbol(s), please correct regular expression.");
+        return;
+    }
 	disable('#graphit');
 	var parser = new RegexParser();
 	nfa = parser.parse($('#regex').attr('value'));
@@ -106,7 +168,6 @@ function getKey(e, set) {
 };
 
 // Moving inside the graph by input symbols.
-// setTimeout ?
 function graphMoveByInput(e) {
     if (lock) {
         if (failedInputs) {
@@ -163,7 +224,9 @@ function graphMoveByInput(e) {
 		
 		// go back one state
 		window.gPrevState = gPrevStates.pop();
+        if (!window.gPrevState) return; // none of word left
 		window.setTimeout(function() {
+            if (!window.gPrevState) return; // none of word left
             g.mover.animate({cx:gPrevState.node[1][0].cx.baseVal.value, cy:gPrevState.node[1][0].cy.baseVal.value}, 250);
             lock = false; 
         }, 250);

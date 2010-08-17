@@ -2,6 +2,8 @@
  * NfaState
  * Represents a state of a NFA (following Thompson's algorithm).
  */
+
+
 function NfaState(symbol) {
     if(!symbol) {
         this.symbol = EPSILON;
@@ -20,3 +22,4 @@ NfaState.prototype.setFollowUp = function(index, state) {
     if (! ((index == 0) || (index==1)) ) return;
     this.followUps[index] = state;
 };
+

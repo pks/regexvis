@@ -1,4 +1,4 @@
-// Source: http://raphaeljs.com/graffle.html (extended with labels and arrow heads)
+// source: http://raphaeljs.com/graffle.html (extended with labels and arrow heads)
 Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, labelFontSize, name1, name2) {	
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
@@ -79,11 +79,15 @@ Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, lab
 		return ret;
     };
 };
-// Source: http://stackoverflow.com/questions/2627436/svg-animation-along-path-with-raphael
+
+
+// source: http://stackoverflow.com/questions/2627436/svg-animation-along-path-with-raphael
 Raphael.fn.circlePath = function(x , y, r) {      
 	return "M"+x+","+(y-r)+"A"+r+","+r+",0,1,1,"+(x-0.1)+","+(y-r)+" z";
 };
-// The nodes
+
+
+// nodes
 Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 			strokeWidth, strokeColor,labelText, labelFontSize, name) {
 	var res = this.set();
@@ -143,15 +147,9 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 		name: name
 	};
 };
-// Source: http://www.davidcramer.net/code/63/dir-in-javascript.html
-function dir(object) {
-    methods = [];
-    for (z in object) if (typeof(z) != 'number') methods.push(z);
-    return methods.join(', ');
-};
 
 
-// Drawing the graph.
+// drawing a graph
 function graph() {
 	var nodeRadius 	 = 30;
 	var nodeRadiusHi = nodeRadius + 10;
@@ -180,6 +178,7 @@ function graph() {
 		up = function () {
 			this.animate({r:nodeRadius, opacity:nodeOpacity}, 500, ">");
 		};
+
 	// nodes
 	var nodes 			= [];
 	var nodeById		= [];
@@ -221,6 +220,7 @@ function graph() {
 		nx = nx + nxOffset;
 		i++;
 	};
+
 	// connections
 	var connections = [];
 	var k = l = 0;
@@ -252,3 +252,4 @@ function graph() {
 		graphNodeByName: graphNodeByName
 	};
 };
+

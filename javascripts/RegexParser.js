@@ -3,6 +3,8 @@
  * Parsing a regular expression using recursive descent method.
  * parse() returns a NFA (constructed following Thompson's algrotihm).
  */
+
+
 function RegexParser() {};
 
 // Accessor functions
@@ -123,4 +125,5 @@ RegexParser.prototype.parse = function(regex) {
         nfa = null;
     };
     return nfa;
-}
+};
+

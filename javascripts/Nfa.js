@@ -2,6 +2,8 @@
  * Nfa
  * NFA consisting of several NfaStates, following Thompson's algorithm.
  */
+
+
 function Nfa(symbol) {
 	this.startState = null;
 	this.finalState = null;
@@ -60,3 +62,4 @@ Nfa.prototype.kleene = function() {
 
     return this;
 };
+

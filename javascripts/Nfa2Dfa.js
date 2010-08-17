@@ -3,6 +3,7 @@
  * Convert a NFA to a DFA utilizing epsilon closure.
  */
 
+
 // Compare two NfaStates for equality.
 function StateCmp(a, b) {
 	if (a.id == b.id) {
@@ -11,7 +12,7 @@ function StateCmp(a, b) {
 	return false
 };
 
-// Compare two stacks filled with NfaStates for euqality.
+// Compare two stacks filled with NfaStates for equality.
 function NfaStackCmp(x, y) {
 	var b = true;
 	if (x.length != y.length) { return false }
@@ -114,3 +115,4 @@ Nfa2Dfa.prototype.move = function(str, p) {
     };
 	return q;
 };
+

@@ -2,6 +2,8 @@
  * Stack
  * Simple implementation of a stack using Array().
  */
+
+
 function Stack() {
 	this.a 		= new Array();
 	this.length = 0;
@@ -53,3 +55,4 @@ Stack.prototype.str = function(separator) {
 	};
 	return a.join(separator);
 };
+
