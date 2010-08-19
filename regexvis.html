@@ -42,7 +42,7 @@
 			<a id="reloadButton" class="message gray grayc" href='#'>Reload</a>
             <a id="descButton" class="message gray grayc" href="#">Description</a>
 
-			<span id="desc">This is a little tool to visualize <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>
+			<span id="desc">This is little application to visualize <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>
                 using a <a href="http://en.wikipedia.org/wiki/Finite_state_automata">deterministic finite state automaton</a>.
                 It was developed for a seminar by Karin Haenelt -- 
                 "<a href="http://kontext.fraunhofer.de/haenelt/kurs/FSA/index.html">Endliche Automaten für die Sprachverarbeitung</a>"
@@ -50,7 +50,7 @@
                 <a href="http://raphaeljs.com/">Raphaël</a> and <a href="http://jquery.com/">jQuery</a> libraries. The corresponding
                 presentation can be downloaded <a href="">here</a> (in German).<br />
                 The project includes a parser for basic regular expressions, a simulator for testing if a given word is included in the
-                language defined by the regular expression and another relatively fancy simulator for checking includance graphically step
+                language defined by the regular expression and additional a relatively fancy simulator for checking includance graphically step
                 by step. These parts are based on several standard algorithms which can be found in the following literature:
                 <ul>
                     <li><strong>Recursive descent parser, Thompson's algorithm:</strong>
@@ -60,7 +60,7 @@
                     <li><strong>Epsilon closure:</strong> <em>The treatment of epsilon moves in subset construction.</em> (Gertjan van Noord)</li>
                 </ul>
                 The user interface should be self explanatory and fail safe but you can obtain help for each step by hovering over The
-                corresponding <span style="font-family:Courier">?</span> symbol. If something goes wrong just click <em>Reload</em>.
+                corresponding <span style="font-family:Courier">?</span> symbol. If there's a problem just click <em>Reload</em>.
                 <p class="small"><strong>Browser compatibility:</strong>
                     <ul>
                         <li><em>Firefox</em> (3): full functionality</li>
@@ -69,7 +69,7 @@
                         <li><em>Internet Explorer:</em> unknown, probably none</li>
                     </ul>
                 </p>
-                <p class="small r">Click <em>Description</em> again to hide this text.</p>
+                <p class="small r">To hide this text click <em>Description</em> again.</p>
             </span>
 		</div>
         <!-- /meta -->
@@ -85,7 +85,8 @@
 				</td>
                 <td>
                     <div title="Alphabet: - The alphabet that is usable in the regular expression. The symbol
-                        <span style='font-family:Courier'>%</span> and all special characters (see help for <span style='font-family:Courier'>Regular Expression</span>) are forbidden and will be removed, any whitespace will be omitted.
+                        <span style='font-family:Courier'>%</span> and all special characters 
+                        (see help for <em>Regular Expression</em>) are forbidden and will be removed, any whitespace will be omitted.
                         Input will be treated case sensitive. Double click to change the usable symbols (click outside the
                         input box to save)." id="helpAlphabet" class="message green greenc help">?</div>
                 </td>
@@ -98,7 +99,7 @@
 				    <input id="graphit" type="checkbox" name="graphit" value="" autocomplete="off" checked="checked" />
 			    </td>
                 <td>
-                    <div title="Draw Graph: - Tick if you want a graphical simulation (default), untick for simple check."
+                    <div title="Draw Graph: - Tick if you want a graphical simulation (default), untick for simple checking."
                         id="helpGraph" class="message green greenc help">?</div>
                 </td>
 		    </tr>
@@ -128,9 +129,9 @@
 			    </td>
                 <td>
                     <div title="Word: - Enter the word to be simulated here. The simulation process will be shown step by step
-                        if <em>Draw Graph</em> was ticked before parsing, otherwise click on check to simulate the word.
-                        Backspace works as one would expect. <span class='small'>Do not type too fast while graphical simulation,
-                        because synchronization is not perfect, you can press backspace several times to overcome occurred problems.</span>"
+                        if <em>Draw Graph</em> was ticked before parsing, otherwise click on <em>Check</em> to simulate the word.
+                        Backspace works as expected. <span class='small'>Do not type too fast during graphical simulation,
+                        because synchronization is not perfect, you can press backspace several times in case of problems.</span>"
                         id="helpWord" class="message green greenc help">?</div>
                 </td>
 	        </tr>
