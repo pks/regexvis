@@ -4,11 +4,11 @@
  */
 
 
-// initialization of ui 
+// initialization of ui
 $(function() {
     // #alphabet
     $('#alphabet').html(ALPHABET.substr(0,ALPHABET.length-1));
-    // #regex 
+    // #regex
     $('#regex').change(function() { checkLength(this, "#parseButton"); });
     $('#regex').keypress(function(event) { return getKey(event, ALPHABETS); });
     $('#regex').mouseout(function() { checkLength(this, "#parseButton"); });
@@ -30,7 +30,7 @@ $(function() {
     // #descButton
     $('#descButton').click(function() { $('#desc').toggle(); });
     // in place edit of alphabet
-    $('body').click(function() { 
+    $('body').click(function() {
         if (alphabetEdit) {
             ALPHABET = $('#alphabetInput').attr('value').replace(/\s/g,'').replace(/%/g, '').replace(/\*/g, '');
             ALPHABET = ALPHABET.replace(/\(/g, '').replace(/\)/g, '').replace(/\|/g, '')+STOPSYMBOL;
@@ -176,7 +176,7 @@ function graphMoveByInput(e) {
             //var w = $('#word').attr('value');
             //$('#word').attr('value', w.substr(0, w.length-1));
             lock = false;
-            return false; 
+            return false;
         }
     } else {
         lock = true;
@@ -228,7 +228,7 @@ function graphMoveByInput(e) {
 		window.setTimeout(function() {
             if (!window.gPrevState) return; // none of word left
             g.mover.animate({cx:gPrevState.node[1][0].cx.baseVal.value, cy:gPrevState.node[1][0].cy.baseVal.value}, 250);
-            lock = false; 
+            lock = false;
         }, 250);
 		window.gCurrentState = gPrevState;
 		if (ttable[window.gCurrentState.name].isFinal) {

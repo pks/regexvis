@@ -61,7 +61,7 @@ RegexParser.prototype.literal = function() {
         this.consume(symbol);
         return new Nfa(symbol);
     };
-    throw("RegexParser.literal(): Expected a letter or '"+EMPTYSYMBOL+"'."); 
+    throw("RegexParser.literal(): Expected a letter or '"+EMPTYSYMBOL+"'.");
 };
 
 // Atomar expression.
@@ -121,7 +121,7 @@ RegexParser.prototype.parse = function(regex) {
         };
     } catch(e) {
         this.errorMessage = e;
-		this.errorPosition = regex.length - this.str.length;        
+		this.errorPosition = regex.length - this.str.length;
         nfa = null;
     };
     return nfa;

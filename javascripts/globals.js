@@ -1,6 +1,6 @@
 // globals
 var EPSILON     = '~';                  // internal use, symbol for 'non-symbol'
-var NEXTSTATE   = 0;                    // internal use, state indices, begin at 0 
+var NEXTSTATE   = 0;                    // internal use, state indices, begin at 0
 var STOPSYMBOL  = '%';                  // internal use, stop symbol
 var ALPHABET    = 'abcd'+STOPSYMBOL;    // used alphabet, need to include stop symbol
 var SPECIALS    = '()|*';               // symbol with special meaning in a regex

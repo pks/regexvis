@@ -20,7 +20,7 @@ NfaSimulator.prototype.simulate = function(word) {
     this.q = new Stack();
     this.getStartState().mark(true);
     this.q.push(this.getStartState());
-    word += REDELIMITER;  
+    word += REDELIMITER;
 	for (var i = 0; i < word.length; i++) {	
         accepted = this.epsclosure();
 		a = word.substring(i, i+1);

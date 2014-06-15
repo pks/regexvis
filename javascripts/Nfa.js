@@ -25,7 +25,7 @@ Nfa.prototype.setFinalState = function(s) { this.finalState = s; };
 Nfa.prototype.concat = function(nfa) {
     this.getFinalState().setFollowUp(0, nfa.getStartState());
     this.setFinalState(nfa.getFinalState());
-    
+
 	return this;
 };
 
@@ -36,10 +36,10 @@ Nfa.prototype.union = function(nfa) {
 
     s.setFollowUp(0, this.getStartState());
     s.setFollowUp(1, nfa.getStartState());
-    
+
     this.getFinalState().setFollowUp(0, t);
     nfa.getFinalState().setFollowUp(0, t);
-    
+
     this.setStartState(s);
     this.setFinalState(t);
 

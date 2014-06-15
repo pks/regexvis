@@ -82,7 +82,7 @@ Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, lab
 
 
 // source: http://stackoverflow.com/questions/2627436/svg-animation-along-path-with-raphael
-Raphael.fn.circlePath = function(x , y, r) {      
+Raphael.fn.circlePath = function(x , y, r) {
 	return "M"+x+","+(y-r)+"A"+r+","+r+",0,1,1,"+(x-0.1)+","+(y-r)+" z";
 };
 
@@ -106,7 +106,7 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 	};
 	// self connection
 	if (hasSelfConn) {
-		var p1 = co.getPointAtLength(co.getTotalLength()-r/3); 
+		var p1 = co.getPointAtLength(co.getTotalLength()-r/3);
 		var p2 = co.getPointAtLength(r/3);
 		var selfConn = this.path('M'+p1.x+','+p1.y+
 			' C'+(p1.x-r)+','+(p1.y-2.5*r)+' '+
