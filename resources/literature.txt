@@ -1,0 +1,3 @@
+Compact DFA Representation for Fast Regular Expression Search (Gonzalo Navarro & Mathieu Raffinot)
+Treatment of Epsilon Moves in Subset  Construction (Gertjan van Noord)
+

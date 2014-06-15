@@ -3,6 +3,7 @@ http://www.inf.fh-flensburg.de/lang/compbau/recursivedescent.htm
 http://www.inf.fh-flensburg.de/lang/theor/regular-expression-parser.htm
 http://www.codeproject.com/KB/recipes/OwnRegExpressionsParser.aspx
 http://www.inf.fh-flensburg.de/lang/theor/regulaerer-ausdruck-zu-automat-bottomup.htm
+http://ls11-www.cs.tu-dortmund.de/people/rahmann/teaching/ss2008/AlgorithmenAufSequenzen/04-regulaere-ausdruecke.pdf
 
 http://osteele.com/archives/2006/02/reanimator
 http://www.codeguru.com/cpp/cpp/cpp_mfc/parsing/article.php/c4093/
@@ -18,4 +19,3 @@ http://groups.google.com.au/group/raphaeljs/browse_thread/thread/adaa2b0331f64d6
 http://paste.ubuntu.com/205627/
 http://gist.github.com/205638
 
-Algorithmen in Java
