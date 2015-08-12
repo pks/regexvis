@@ -3,13 +3,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Language" content="en_EN" />
-    <meta name="author" content="Patrick Simianer" />       
-    
+    <meta name="author" content="Patrick Simianer" />
+
     <title>Visualizing Regular Expressions | regexvis</title>
-    
+
     <link rel="stylesheet" type="text/css" href="stylesheets/styles.css" />
 
-    <!-- http://raphaeljs.com --> 
+    <!-- http://raphaeljs.com -->
     <script type="text/javascript" src="javascripts/lib/raphael.js"></script>
     <!-- http://jquery.com -->
     <script type="text/javascript" src="javascripts/lib/jquery.js"></script>
@@ -19,32 +19,32 @@
     <script type="text/javascript" src="javascripts/lib/jquery.bgiframe.js"></script>
     <script type="text/javascript" src="javascripts/lib/jquery.dimensions.js"></script>
     <script type="text/javascript" src="javascripts/lib/jquery.tooltip.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/jquery.tooltip.css" />    
+    <link rel="stylesheet" type="text/css" href="stylesheets/jquery.tooltip.css" />
 
     <script type="text/javascript" src="javascripts/globals.js"></script>
     <script type="text/javascript" src="javascripts/NfaState.js"></script>
     <script type="text/javascript" src="javascripts/Nfa.js"></script>
     <script type="text/javascript" src="javascripts/RegexParser.js"></script>
-    <script type="text/javascript" src="javascripts/Stack.js"></script>       
+    <script type="text/javascript" src="javascripts/Stack.js"></script>
     <script type="text/javascript" src="javascripts/NfaSimulator.js"></script>
     <script type="text/javascript" src="javascripts/Nfa2Dfa.js"></script>
     <script type="text/javascript" src="javascripts/graph.js"></script>
-	<script type="text/javascript" src="javascripts/ui.js"></script>
+  <script type="text/javascript" src="javascripts/ui.js"></script>
 </head>
 
 <body>
 
-	<div id="wrapper">
+  <div id="wrapper">
 
 
-        <!-- meta -->
-		<div id="top">
-			<a id="reloadButton" class="message gray grayc" href='#'>Reload</a>
+<!-- meta -->
+    <div id="top">
+      <a id="reloadButton" class="message gray grayc" href='#'>Reload</a>
             <a id="descButton" class="message gray grayc" href="#">Description</a>
 
-			<span id="desc">This is little application to visualize <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>
+      <span id="desc">This is little application to visualize <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>
                 using a <a href="http://en.wikipedia.org/wiki/Finite_state_automata">deterministic finite state automaton</a>.
-                It was developed for a seminar by Karin Haenelt -- 
+                It was developed for a seminar by Karin Haenelt --
                 "<a href="http://kontext.fraunhofer.de/haenelt/kurs/FSA/index.html">Endliche Automaten für die Sprachverarbeitung</a>"
                 in summer term 2010. It is written in pure JavaScript (plus some SVG and underlying HTML) using the
                 <a href="http://raphaeljs.com/">Raphaël</a> and <a href="http://jquery.com/">jQuery</a> libraries. The corresponding
@@ -65,68 +65,67 @@
                     <ul>
                         <li><em>Firefox</em> (3-31): full functionality</li>
                         <li><em>Opera</em> (10): full functionality</li>
-                        <li><em>WebKit (Safari/Chrome)</em>: backspace in graphical simulation does not work</li>                        
+                        <li><em>WebKit (Safari/Chrome)</em>: backspace in graphical simulation does not work</li>
                         <li><em>Internet Explorer:</em> unknown, probably none</li>
                     </ul>
                 </p>
                 <p class="small r">To hide this text click <em>Description</em> again.</p>
-            </span>
-		</div>
-        <!-- /meta -->
-	
+      </span>
+    </div>
+<!-- /meta -->
 
-        <!-- form -->
-		<table>
-			<tr>
-                <td><div class="message gray grayc">-1</div></td>
-				<td style="width:200px" class="r grayc"><strong>Alphabet:</strong></td>
-				<td style="width:500px">
-                    <strong class="grayc"><div id="alphabet"></div></strong>
-				</td>
-                <td>
-                    <div title="Alphabet: - The alphabet that is usable in the regular expression. The symbol
-                        <span style='font-family:Courier'>%</span> and all special characters 
-                        (see help for <em>Regular Expression</em>) are forbidden and will be removed, any whitespace will be omitted.
-                        Input will be treated case sensitive. Double click to change the usable symbols (click outside the
-                        input box to save)." id="helpAlphabet" class="message green greenc help">?</div>
-                </td>
-			</tr>
 
-                        <tr>
-                <td><div class="message gray grayc">&nbsp;0</div></td>					
-                <td class="r grayc"><strong>Draw Graph:</strong></td>
-			    <td>
-				    <input id="graphit" type="checkbox" name="graphit" value="" autocomplete="off" checked="checked" />
-			    </td>
-                <td>
-                    <div title="Draw Graph: - Tick if you want a graphical simulation (default), untick for simple checking."
-                        id="helpGraph" class="message green greenc help">?</div>
-                </td>
-		    </tr>
+<!-- form -->
+    <table>
+      <tr>
+        <td><div class="message gray grayc">-1</div></td>
+        <td style="width:200px" class="r grayc"><strong>Alphabet:</strong></td>
+        <td style="width:500px">
+          <strong class="grayc"><div id="alphabet"></div></strong>
+        </td>
+        <td>
+          <div title="Alphabet: - The alphabet that is usable in the regular expression. The symbol
+              <span style='font-family:Courier'>%</span> and all special characters
+              (see help for <em>Regular Expression</em>) are forbidden and will be removed, any whitespace will be omitted.
+              Input will be treated case sensitive. Double click to change the usable symbols (click outside the
+              input box to save)." id="helpAlphabet" class="message green greenc help">?</div>
+        </td>
+      </tr>
+      <tr>
+        <td><div class="message gray grayc">&nbsp;0</div></td>
+        <td class="r grayc"><strong>Draw Graph:</strong></td>
+        <td>
+          <input id="graphit" type="checkbox" name="graphit" value="" autocomplete="off" checked="checked" />
+        </td>
+        <td>
+            <div title="Draw Graph: - Tick if you want a graphical simulation (default), untick for simple checking."
+                id="helpGraph" class="message green greenc help">?</div>
+        </td>
+        </tr>
 
-			<tr>
-                <td><div class="message gray grayc">&nbsp;1</div></td>
-				<td class="r"><strong>Regular Expression:</strong></td>
-				<td>
-                    <input id="regex" type="text" name="regex" value="" autocomplete="off" />
-					<input type="button" name="parseButton" id="parseButton" value="Parse" disabled='disabled' autocomplete="off" />
-				</td>
-                <td>
-                    <div title="Regular Expression: - Enter a regular expression here, the special symbols
-                        <span style='font-family:Courier'>*</span>, <span style='font-family:Courier'>|</span> and
-                        <span style='font-family:Courier'>()</span> are currently supported. Click on <em>Parse</em> to parse
-                        the string. If <em>Draw Graph</em> is ticked the corresponding graph will be drawn below." 
-                        id="helpRe" class="message green greenc help">?</div>
-                </td>
-			</tr>
-			
-            <tr>
-                <td><div class="message gray grayc">&nbsp;2</div></td>
-				<td class="r"><strong>Word:</strong></td>
-				<td>
-                    <input id="word" type="text" name="word" value="" disabled="disabled" autocomplete="off" />
-					<input id="checkButton" type="button" name="checkButton" value="Check" disabled='disabled' autocomplete="off" />
-			    </td>
+      <tr>
+        <td><div class="message gray grayc">&nbsp;1</div></td>
+        <td class="r"><strong>Regular Expression:</strong></td>
+        <td>
+          <input id="regex" type="text" name="regex" value="" autocomplete="off" />
+          <input type="button" name="parseButton" id="parseButton" value="Parse" disabled='disabled' autocomplete="off" />
+        </td>
+          <td>
+              <div title="Regular Expression: - Enter a regular expression here, the special symbols
+                  <span style='font-family:Courier'>*</span>, <span style='font-family:Courier'>|</span> and
+                  <span style='font-family:Courier'>()</span> are currently supported. Click on <em>Parse</em> to parse
+                  the string. If <em>Draw Graph</em> is ticked the corresponding graph will be drawn below."
+                  id="helpRe" class="message green greenc help">?</div>
+          </td>
+      </tr>
+
+      <tr>
+        <td><div class="message gray grayc">&nbsp;2</div></td>
+        <td class="r"><strong>Word:</strong></td>
+        <td>
+          <input id="word" type="text" name="word" value="" disabled="disabled" autocomplete="off" />
+          <input id="checkButton" type="button" name="checkButton" value="Check" disabled='disabled' autocomplete="off" />
+          </td>
                 <td>
                     <div title="Word: - Enter the word to be simulated here. The simulation process will be shown step by step
                         if <em>Draw Graph</em> was ticked before parsing, otherwise click on <em>Check</em> to simulate the word.
@@ -134,25 +133,25 @@
                         because synchronization is not perfect, you can press backspace several times in case of problems.</span>"
                         id="helpWord" class="message green greenc help">?</div>
                 </td>
-	        </tr>
-		</table>
-        <!-- /form -->
-	    
+          </tr>
+    </table>
+<!-- /form -->
 
-        <!-- messages -->
-		<p>
-			<span id="parseMessage" class="message" style="display:none"></span>
-			<span id="checkMessage" class="message" style="display:none"></span>
-		</p>
-        <!-- /messages -->
-		
 
-		<!-- svg drawing area -->
+<!-- messages -->
+    <p>
+      <span id="parseMessage" class="message" style="display:none"></span>
+      <span id="checkMessage" class="message" style="display:none"></span>
+    </p>
+<!-- /messages -->
+
+
+<!-- svg drawing area -->
         <div id="holder"></div>
-		<!-- /svg drawing area -->
+<!-- /svg drawing area -->
 
 
-	</div>
+  </div>
 
 </body>
 </html>
