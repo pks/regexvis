@@ -1,5 +1,5 @@
 // source: http://raphaeljs.com/graffle.html (extended with labels and arrow heads)
-Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, labelFontSize, name1, name2) {	
+Raphael.fn.connection = function (obj1, obj2, line, bg, strokeColor, symbol, labelFontSize, name1, name2) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
         obj1 = line.from;
@@ -102,7 +102,7 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 	if (isFinal) {
 		// inner circle
 		var ci = this.path(this.circlePath(x, y, r/1.2)).attr({
-					stroke:'#fff', 'stroke-width':strokeWidth});
+      stroke:'#fff', 'stroke-width':strokeWidth, cx: x, cy: y});
 	};
 	// self connection
 	if (hasSelfConn) {
@@ -121,8 +121,8 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 		var ahSize 	= r/8;
 		var ahRef 	= selfConn.getPointAtLength(selfConn.getTotalLength()-1)
 		var ahAngle = Math.atan2(ahRef.x-p2.x,p2.x-(-ahRef.y));
-	    ahAngle 	= (ahAngle / (2 * Math.PI)) * 360;
-	    var ah = this.path("M" + ahRef.x + " " + ahRef.y +
+	  ahAngle 	= (ahAngle / (2 * Math.PI)) * 360;
+	  var ah = this.path("M" + ahRef.x + " " + ahRef.y +
 			" L" + (ahRef.x - ahSize) + " " + (ahRef.y - ahSize) +
 			" L" + (ahRef.x - ahSize) + " " + (ahRef.y + ahSize) +
 			" L" + ahRef.x + " " + ahRef.y
@@ -158,24 +158,38 @@ function graph() {
 	var labelFontSize = 16;
 	var strokeWidth = 3;
 	var strokeColor = '#ccc';
-	
+
 	r = Raphael("holder", 1000, 510);
-	
+
 	// dragging, see: http://raphaeljs.com/touches.html
 	var start = function () {
+    for (var i = nodeById[this.id].node.length - 1; i >= 0; i--) {
+      var n = nodeById[this.id].node[i];
+      n.attrs.ox = n.attrs.cx;
+      n.attrs.oy = n.attrs.cy;
+    }
 		this.animate({r: nodeRadiusHi, opacity: nodeOpacityHi}, 500, ">");
 	},
 		move = function (dx, dy) {
-			this.moveTo(dx, dy);
 			for (var i = nodeById[this.id].node.length - 1; i >= 0; i--){
-				nodeById[this.id].node[i].translate(dx, dy);
+        var n = nodeById[this.id].node[i];
+        var ox = n.attrs.ox;
+        var oy = n.attrs.oy;
+        att = { cx:ox+dx, cy: oy+dy }
+			  n.attr(att);
 			};
 			for (var i = connections.length; i--;) {
 				r.connection(connections[i]);
-        	};
-        	r.safari();
+      };
+      r.safari();
 		},
 		up = function () {
+      if (nodeById[this.id].node.length == 4) { // inner circle
+        var inner = nodeById[this.id].node[3];
+        inner.translate(inner.attrs.cx-inner.attrs.ox, inner.attrs.cy-inner.attrs.oy);
+      }
+      var waypoint = nodeById[this.id].node[2]
+      waypoint.translate(waypoint.attrs.cx-waypoint.attrs.ox, waypoint.attrs.cy-waypoint.attrs.oy);
 			this.animate({r:nodeRadius, opacity:nodeOpacity}, 500, ">");
 		};
 
@@ -194,17 +208,17 @@ function graph() {
 			isFinal = true;
 		} else {
 			isFinal = false;
-		};	
+		};
 		for (symbol in ttable[state]) {
 			if (symbol == 'isFinal') { continue; };
-			if (ttable[state][symbol] == state) {	
+			if (ttable[state][symbol] == state) {
 				selfConn = true;
 				selfConnSymbol = symbol;
 				break;
 			} else {
 				selfConn = false;
 			};
-		};		
+		};
 		if (i % 2 == 0) {
 			ny = nyOffset;
 		} else {
@@ -235,7 +249,7 @@ function graph() {
 						} else {
 							connections.push(r.connection(nodes[k].node[0], nodes[l].node[0],
 								strokeColor, strokeColor, strokeColor, ALPHABET[i], labelFontSize,
-								nodes[k].name, nodes[l].name));								
+								nodes[k].name, nodes[l].name));
 						};
 					};
 					l++;
