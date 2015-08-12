@@ -281,8 +281,8 @@ function graphMoveByInput(e) {
 			).attr({stroke:'none'});
 	   (function(g, line) {
 	        setTimeout(function() {
-	          	g.mover.animateAlong(line, 250);
-                lock = false;
+	          	g.mover.animateAlong(line, 164);
+               lock = false;
 				return line;
 			}, 250);
 	    })(g, line);
