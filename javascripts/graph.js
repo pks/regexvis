@@ -98,11 +98,13 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 	res.push(dragger);
 	// outer circle
 	var co = this.path(this.circlePath(x, y, r)).attr({stroke:'none'});
+  co["_type"] = "waypoint";
 	res.push(co);
 	if (isFinal) {
 		// inner circle
 		var ci = this.path(this.circlePath(x, y, r/1.2)).attr({
       stroke:'#fff', 'stroke-width':strokeWidth, cx: x, cy: y});
+    ci["_type"] = "inner_circle";
 	};
 	// self connection
 	if (hasSelfConn) {
@@ -111,6 +113,8 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 		var selfConn = this.path('M'+p1.x+','+p1.y+
 			' C'+(p1.x-r)+','+(p1.y-2.5*r)+' '+
 			(p2.x+r)+','+(p1.y-2.5*r)+' '+p2.x+','+p2.y);
+    selfConn.attr({ cx: p1.x, cy: p1.y });
+    selfConn["_type"] = "selfConn";
 		res.push(selfConn.attr({'stroke-width': strokeWidth,
 								stroke: strokeColor}));
 		// another path for animation (connected to the center of co)
@@ -128,15 +132,15 @@ Raphael.fn.aNode = function(x, y, r, isFinal, hasSelfConn,
 			" L" + ahRef.x + " " + ahRef.y
 			).attr({stroke:strokeColor, fill:strokeColor}
 				).rotate((112+ahAngle), ahRef.x, ahRef.y);
+    ah["_type"] = "selfConnArrowHead";
+    ah.attr({ cx: ahRef.x, cy: ahRef.y });
 		res.push(ah);
 		// label on self connection
-		var label = this.text(
-			selfConn.getPointAtLength(
-				selfConn.getTotalLength()/2).x,
-			selfConn.getPointAtLength(
-				selfConn.getTotalLength()/2).y-labelFontSize/1.25,
-			labelText
-			).attr({font: this.getFont("Helvetica"), 'font-size': labelFontSize});
+    var lx = selfConn.getPointAtLength(selfConn.getTotalLength()/2).x;
+    var ly = selfConn.getPointAtLength(selfConn.getTotalLength()/2).y-labelFontSize/1.25;
+		var label = this.text(lx, ly, labelText).attr({font: this.getFont("Helvetica"), 'font-size': labelFontSize});
+    label["_type"] = "selfConnLabel";
+    label.attr({ cx: lx, cy: ly });
 		res.push(label);
 	};
 	if (isFinal) {
@@ -165,13 +169,16 @@ function graph() {
 	var start = function () {
     for (var i = nodeById[this.id].node.length - 1; i >= 0; i--) {
       var n = nodeById[this.id].node[i];
+      if (n["_type"] && ["selfConn", "selfConnArrowHead", "selfConnLabel"].indexOf(n["_type"])!=-1) {
+        n.animate({ opacity : 0 }, 250, function () { this.hide() });
+      }
       n.attrs.ox = n.attrs.cx;
       n.attrs.oy = n.attrs.cy;
     }
 		this.animate({r: nodeRadiusHi, opacity: nodeOpacityHi}, 500, ">");
 	},
 		move = function (dx, dy) {
-			for (var i = nodeById[this.id].node.length - 1; i >= 0; i--){
+			for (var i = nodeById[this.id].node.length - 1; i >= 0; i--) {
         var n = nodeById[this.id].node[i];
         var ox = n.attrs.ox;
         var oy = n.attrs.oy;
@@ -184,12 +191,30 @@ function graph() {
       r.safari();
 		},
 		up = function () {
-      if (nodeById[this.id].node.length == 4) { // inner circle
-        var inner = nodeById[this.id].node[3];
-        inner.translate(inner.attrs.cx-inner.attrs.ox, inner.attrs.cy-inner.attrs.oy);
+      var n = nodeById[this.id];
+      for (var i = n.node.length - 1; i >= 0; i--) {
+        if (n.node[i]["_type"] && n.node[i]["_type"]=="inner_circle") {
+          var inner = nodeById[this.id].node[i];
+          inner.translate(inner.attrs.cx-inner.attrs.ox, inner.attrs.cy-inner.attrs.oy);
+        } else if (n.node[i]["_type"] && n.node[i]["_type"]=="waypoint") {
+          var waypoint = n.node[i];
+          waypoint.translate(waypoint.attrs.cx-waypoint.attrs.ox, waypoint.attrs.cy-waypoint.attrs.oy);
+        } else if (n.node[i]["_type"] && n.node[i]["_type"]=="selfConn") {
+          var selfConn = n.node[i];
+          selfConn.translate(selfConn.attrs.cx-selfConn.attrs.ox, selfConn.attrs.cy-selfConn.attrs.oy);
+          selfConn.show().animate({ opacity : 1 }, 1000);
+        } else if (n.node[i]["_type"] && n.node[i]["_type"]=="selfConnArrowHead") {
+          var selfConnArrowHead = n.node[i];
+          selfConnArrowHead.translate(selfConnArrowHead.attrs.cx-selfConnArrowHead.attrs.ox, selfConnArrowHead.attrs.cy-selfConnArrowHead.attrs.oy);
+          selfConnArrowHead.show().animate({ opacity : 1 }, 1000);
+        } else if (n.node[i]["_type"] && n.node[i]["_type"]=="selfConnLabel") {
+          var selfConnLabel = n.node[i];
+          selfConnLabel.translate(selfConnLabel.attrs.cx-selfConnLabel.attrs.ox, selfConnLabel.attrs.cy-selfConnLabel.attrs.oy);
+          selfConnLabel.show().animate({ opacity : 1 }, 1000);
+        } else {
+          //
+        }
       }
-      var waypoint = nodeById[this.id].node[2]
-      waypoint.translate(waypoint.attrs.cx-waypoint.attrs.ox, waypoint.attrs.cy-waypoint.attrs.oy);
 			this.animate({r:nodeRadius, opacity:nodeOpacity}, 500, ">");
 		};
 
